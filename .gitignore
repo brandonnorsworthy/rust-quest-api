@@ -27,3 +27,9 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 *.code-workspace
+
+# sql
+*.session.sql
+
+# secrets
+*.env
