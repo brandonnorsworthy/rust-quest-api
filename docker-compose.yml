@@ -5,7 +5,7 @@ services:
     container_name: rustquestdb
     shm_size: 128mb
     env_file:
-      - .env
+      - .docker.env
     ports:
       - "5432:5432"
     volumes:
