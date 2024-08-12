@@ -6,8 +6,8 @@ import questRouter from './quest.router';
 
 const router = express.Router();
 
-router.use('/users', userRouter);
 router.use('/auth', authRouter);
+router.use('/users', userRouter);
 router.use('/quests', questRouter);
 
 export default router;

@@ -1,12 +1,14 @@
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import { BCRYPT_PEPPER as BCRYPT_PEPPER, BCRYPT_SALT_ROUNDS } from '../config';
 
 const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
+  const pepperedPassword = password + BCRYPT_PEPPER;
+  return await bcrypt.hash(pepperedPassword, BCRYPT_SALT_ROUNDS);
 };
 
-const comparePassword = async (password: string, hash: string): Promise<boolean> => {
-  return await bcrypt.compare(password, hash);
+const comparePassword = async (plaintextPassword: string, hashedPassword: string): Promise<boolean> => {
+  const pepperedPassword = plaintextPassword + BCRYPT_PEPPER;
+  return await bcrypt.compare(pepperedPassword, hashedPassword);
 };
 
 export { hashPassword, comparePassword };
