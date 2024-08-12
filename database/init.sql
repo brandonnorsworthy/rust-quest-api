@@ -10,9 +10,9 @@ CREATE TABLE categories (
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    completed_quests INTEGER[] NOT NULL,
-    metadata JSONB NOT NULL,
-    password_hash VARCHAR(255), -- Assuming you'll hash passwords
+    completed_quests INTEGER[] NOT NULL DEFAULT ARRAY[]::INTEGER[],
+    metadata JSONB NOT NULL DEFAULT '{}',
+    password VARCHAR(255),
     oauth_provider VARCHAR(50), -- For OAuth integration (e.g., Google, Facebook)
     oauth_id VARCHAR(255) -- ID from the OAuth provider
 );
@@ -46,17 +46,17 @@ INSERT INTO categories (name) VALUES
 ('Trade');
 
 -- Insert 10 rows into users table
-INSERT INTO users (username, completed_quests, metadata, password_hash, oauth_provider, oauth_id) VALUES
-('zcog', ARRAY[1, 3, 6, 8], '{"sound": false}', NULL, NULL, NULL),
-('player2', ARRAY[2, 4, 7], '{"sound": true}', NULL, 'google', 'google-id-123'),
-('player3', ARRAY[5, 6], '{"sound": false}', 'hash12345', NULL, NULL),
-('player4', ARRAY[1, 2, 8], '{"sound": true}', 'hash67890', NULL, NULL),
-('player5', ARRAY[3, 5, 7], '{"sound": false}', NULL, 'facebook', 'fb-id-456'),
-('player6', ARRAY[4, 6], '{"sound": true}', 'hash11223', NULL, NULL),
-('player7', ARRAY[7, 8], '{"sound": false}', 'hash33445', 'twitter', 'tw-id-789'),
-('player8', ARRAY[1, 3, 4], '{"sound": true}', NULL, NULL, NULL),
-('player9', ARRAY[2, 5, 6], '{"sound": false}', 'hash55667', NULL, NULL),
-('player10', ARRAY[7, 9], '{"sound": true}', NULL, 'google', 'google-id-234');
+INSERT INTO users (username, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
+('zcog', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player2', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6.', 'google', 'google-id-123'),
+('player3', ARRAY[5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player4', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player5', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'facebook', 'fb-id-456'),
+('player6', ARRAY[4, 6], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player7', ARRAY[7, 8], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'twitter', 'tw-id-789'),
+('player8', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player9', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('player10', ARRAY[7, 9], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'google', 'google-id-234');
 
 -- Insert 10 rows into suggestions table
 INSERT INTO suggestions (user_id, title, description) VALUES

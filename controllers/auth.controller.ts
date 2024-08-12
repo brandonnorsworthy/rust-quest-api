@@ -5,23 +5,43 @@ import authService from '../services/auth.service';
 
 export default {
   register: async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-
     try {
-      const user = await userService.getUser(username);
+      const { username, password } = req.body;
 
-      if (user.length === 1) {
-        res.status(400).json({ error: 'Username already taken' });
-        return;
+      const user = await userService.getUserByUsername(username);
+
+      if (user !== null) {
+        return res.status(400).json({ error: 'Username already taken' });
       }
 
-      const newUser = authService.register(username, password);
+      const newUser = await authService.register(username, password);
 
-      //! return jwt token
-      res.status(200).json({ message: 'User logged in successfully' });
+      return res.status(200).json({ message: 'User registered successfully' });
     } catch (error) {
       console.error('Error during login:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
+  login: async (req: Request, res: Response) => {
+    try {
+      const { username, password } = req.body;
+
+      const user = await userService.getUserByUsername(username);
+
+      if (user === null) {
+        return res.status(400).json({ error: 'User not found' });
+      }
+
+      const token = await authService.createTokenSession(user, password);
+      if (token === null) {
+        return res.status(400).json({ error: 'Invalid password' });
+      }
+
+      return res.status(200).json({ token });
+    } catch (error) {
+      console.error('Error during login:', error);
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 }

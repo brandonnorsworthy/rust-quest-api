@@ -1,11 +1,11 @@
 import { executeQuery } from "../database/connection";
 
 export default {
-  getUser: async (username: string) => {
+  getUserByUsername: async (username: string) => {
     const query = `SELECT * FROM users WHERE username = $1`;
     const values = [username];
 
-    return await executeQuery(query, values);
+    return await executeQuery(query, values, true);
   },
 
   getAllUsers: async () => {
