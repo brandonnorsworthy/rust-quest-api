@@ -16,7 +16,12 @@ export default {
 
       const newUser = await authService.register(username, password);
 
-      return res.status(200).json({ message: 'User registered successfully' });
+      const token = await authService.createTokenSession(newUser, password);
+      if (token === null) {
+        return res.status(400).json({ error: 'Issue creating token' });
+      }
+
+      return res.status(201).json({ token });
     } catch (error) {
       console.error('Error during login:', error);
       return res.status(500).json({ error: 'Internal server error' });
