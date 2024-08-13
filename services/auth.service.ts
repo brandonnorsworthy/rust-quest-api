@@ -12,11 +12,21 @@ export default {
   register: async (username: string, password: string) => {
     try {
       const passwordHash = await hashPassword(password);
-      executeQuery('INSERT INTO users (username, password) VALUES ($1, $2)', [username, passwordHash]);
+      const queryString = `
+        WITH inserted_user AS (
+          INSERT INTO users (username, password) 
+          VALUES ($1, $2)
+          RETURNING *
+        )
+        SELECT * FROM inserted_user
+      `;
+      const result = await executeQuery(queryString, [username, passwordHash], true);
+      return result;
     } catch (error) {
       throw new Error('Error during registration');
     }
   },
+
 
   createTokenSession: async (user: User, plaintextPassword: string) => {
     const passwordsMatch = await comparePassword(plaintextPassword, user.password);
