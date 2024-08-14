@@ -6,7 +6,11 @@ export default {
     username: Joi.string()
       .min(4)
       .max(16)
-      .required(),
+      .pattern(new RegExp('^[a-zA-Z0-9]+$'))
+      .required()
+      .messages({
+        'string.pattern.base': 'Username can only contain letters and numbers',
+      }),
     password: Joi.string()
       .min(12)
       .pattern(new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'))
