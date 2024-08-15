@@ -1,6 +1,6 @@
-import { executeQuery } from "../database/connection";
-import { comparePassword, hashPassword } from "../utils/passwordHash";
-import { signToken } from "../utils/signToken";
+import { executeQuery } from "../database/connection.js";
+import { comparePassword, hashPassword } from "../utils/passwordHash.js";
+import { signToken } from "../utils/signToken.js";
 
 export default {
   register: async (username, password) => {

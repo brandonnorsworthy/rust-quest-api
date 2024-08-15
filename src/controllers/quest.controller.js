@@ -1,5 +1,4 @@
-import { Request, Response } from 'express';
-import questService from '../services/quest.service';
+import questService from '../services/quest.service.js';
 
 export default {
   getQuests: async (req, res) => {

@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import morgan from 'morgan';
-import { EXPRESS_PORT } from './config';
+import { EXPRESS_PORT } from './config.js';
 
-import Router from './src/routes';
+import Router from './src/routes/index.js';
 
 const app = express();
 

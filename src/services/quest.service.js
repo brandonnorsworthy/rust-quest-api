@@ -1,4 +1,4 @@
-import { executeQuery } from "../database/connection"
+import { executeQuery } from "../database/connection.js"
 
 export default {
   getQuests: async () => {

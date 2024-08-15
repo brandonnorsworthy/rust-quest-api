@@ -1,6 +1,4 @@
-import { Request, Response } from "express";
-
-import { executeQuery } from "../database/connection";
+import { executeQuery } from "../database/connection.js";
 
 export default {
   getUsers: async (req, res) => {

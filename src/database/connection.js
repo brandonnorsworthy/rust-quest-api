@@ -1,5 +1,7 @@
-import { Pool } from 'pg';
-import { DATABASE } from '../../config';
+import pkg from 'pg';
+const { Pool } = pkg;
+
+import { DATABASE } from '../../config.js';
 
 let pool = null;
 

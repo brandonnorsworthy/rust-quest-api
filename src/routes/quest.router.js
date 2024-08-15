@@ -1,5 +1,5 @@
 import express from 'express';
-import questController from '../controllers/quest.controller';
+import questController from '../controllers/quest.controller.js';
 
 const questRouter = express.Router();
 

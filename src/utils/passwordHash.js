@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { BCRYPT_PEPPER as BCRYPT_PEPPER, BCRYPT_SALT_ROUNDS } from '../../config';
+import { BCRYPT_PEPPER as BCRYPT_PEPPER, BCRYPT_SALT_ROUNDS } from '../../config.js';
 
 const hashPassword = async (password) => {
   const pepperedPassword = password + BCRYPT_PEPPER;

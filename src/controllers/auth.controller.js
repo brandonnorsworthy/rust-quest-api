@@ -1,7 +1,5 @@
-import { Request, Response } from "express";
-
-import userService from '../services/user.service';
-import authService from '../services/auth.service';
+import userService from '../services/user.service.js';
+import authService from '../services/auth.service.js';
 
 export default {
   register: async (req, res) => {
