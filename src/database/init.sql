@@ -48,15 +48,15 @@ INSERT INTO categories (name) VALUES
 -- Insert 10 rows into users table
 INSERT INTO users (username, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
 ('zcog', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player2', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6.', 'google', 'google-id-123'),
-('player3', ARRAY[5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player4', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player5', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'facebook', 'fb-id-456'),
-('player6', ARRAY[4, 6], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player7', ARRAY[7, 8], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'twitter', 'tw-id-789'),
-('player8', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player9', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
-('player10', ARRAY[7, 9], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'google', 'google-id-234');
+('littefoot', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6.', 'google', 'google-id-123'),
+('Cattasaurus', ARRAY[5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('HandsomeJack', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('luna', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'facebook', 'fb-id-456'),
+('SugarCubeBlood', ARRAY[4, 6], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('CaptainSparklez', ARRAY[7, 8], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'twitter', 'tw-id-789'),
+('zezima', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('pageinabook', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', NULL, NULL),
+('notacoconut', ARRAY[7, 9], '{"sound": true}', '$2b$10$XEzscKa8BkSW5EKw5dLkFOlLa6IYRkoykOG2LlYImtIYDG4.6tfu6', 'google', 'google-id-234');
 
 -- Insert 10 rows into suggestions table
 INSERT INTO suggestions (user_id, title, description) VALUES

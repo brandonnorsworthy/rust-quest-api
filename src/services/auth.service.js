@@ -1,15 +1,9 @@
-import { executeQuery } from "../database/connection";
-import { comparePassword, hashPassword } from "../utils/passwordHash";
-import { signToken } from "../utils/signToken";
-
-interface User {
-  id: number;
-  username: string;
-  password: string;
-}
+import { executeQuery } from "../database/connection.js";
+import { comparePassword, hashPassword } from "../utils/passwordHash.js";
+import { signToken } from "../utils/signToken.js";
 
 export default {
-  register: async (username: string, password: string) => {
+  register: async (username, password) => {
     try {
       const passwordHash = await hashPassword(password);
       const queryString = `
@@ -28,7 +22,7 @@ export default {
   },
 
 
-  createTokenSession: async (user: User, plaintextPassword: string) => {
+  createTokenSession: async (user, plaintextPassword) => {
     const passwordsMatch = await comparePassword(plaintextPassword, user.password);
 
     if (!passwordsMatch) {

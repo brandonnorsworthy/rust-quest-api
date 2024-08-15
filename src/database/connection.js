@@ -1,5 +1,7 @@
-import { Pool } from 'pg';
-import { DATABASE } from '../config';
+import pkg from 'pg';
+const { Pool } = pkg;
+
+import { DATABASE } from '../../config.js';
 
 let pool = null;
 
@@ -26,7 +28,7 @@ if (DATABASE.CONNECTION_STRING) {
  * @param expectSingleRow If true, will return the first row of the result; otherwise, will return all rows.
  * @returns A Promise that resolves to the result of the query.
  */
-export const executeQuery = async (queryString: string, queryValues: any[] = [], expectSingleRow: boolean = false): Promise<any[] | any> => {
+export const executeQuery = async (queryString, queryValues, expectSingleRow = false) => {
   try {
     const result = await pool.query(queryString, queryValues);
 
@@ -38,7 +40,7 @@ export const executeQuery = async (queryString: string, queryValues: any[] = [],
     }
 
     return expectSingleRow ? result.rows[0] : result.rows;
-  } catch (error: any) {
+  } catch (error) {
     throw new Error(`Error executing query: ${error.message} | Query: ${queryString}`);
   }
 };

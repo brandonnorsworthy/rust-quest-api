@@ -1,10 +1,8 @@
-import { Request, Response } from "express";
-
-import userService from '../services/user.service';
-import authService from '../services/auth.service';
+import userService from '../services/user.service.js';
+import authService from '../services/auth.service.js';
 
 export default {
-  register: async (req: Request, res: Response) => {
+  register: async (req, res) => {
     try {
       const { username, password } = req.body;
 
@@ -28,7 +26,7 @@ export default {
     }
   },
 
-  login: async (req: Request, res: Response) => {
+  login: async (req, res) => {
     try {
       const { username, password } = req.body;
 

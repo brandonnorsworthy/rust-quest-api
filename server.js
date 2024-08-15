@@ -1,10 +1,10 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import morgan from 'morgan';
-import { EXPRESS_PORT } from './config';
+import { EXPRESS_PORT } from './config.js';
 
-import Router from './routes';
+import Router from './src/routes/index.js';
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req, res) => {
   res.send('Hello, TypeScript with Express!');
 });
 
