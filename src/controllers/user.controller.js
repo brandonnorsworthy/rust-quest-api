@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { executeQuery } from "../database/connection";
 
 export default {
-  getUsers: async (req: Request, res: Response) => {
+  getUsers: async (req, res) => {
     try {
       const users = await executeQuery('SELECT * FROM users');
 
