@@ -1,4 +1,4 @@
-import { executeQuery } from "../database/connection.js";
+import { executeQuery } from "../database/connection";
 
 export default {
   getUserByUsername: async (username: string) => {

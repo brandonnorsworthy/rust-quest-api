@@ -1,19 +1,22 @@
-import { executeQuery } from "../database/connection.js";
+import { Request, Response } from "express";
+import { executeQuery } from "../database/connection";
 
 export default {
-  getUsers: async (req: Request, res: Response) => {
+  getUsers: async (request: Request, response: Response) => {
     try {
       const users = await executeQuery('SELECT * FROM users');
 
+      console.log(users)
+
       if (users.length === 0) {
-        res.status(404).send('No users found');
+        response.status(404).send('No users found');
         return;
       }
 
-      res.send(users);
+      response.send(users);
     } catch (error) {
       console.error(error);
-      res.status(500).send('An error occurred while fetching users');
+      response.status(500).send('An error occurred while fetching users');
     }
   }
 }

@@ -1,15 +1,14 @@
 import express from 'express';
 
-import userRouter from './user.router.js';
-import authRouter from './auth.router.js';
-import questRouter from './quest.router.js';
-import authenticate from '../middleware/authenticate.js';
+import userRouter from './user.router';
+import authRouter from './auth.router';
+import questRouter from './quest.router';
 
 const router = express.Router();
 
 router.use('/auth', authRouter);
 
-router.use('/users', authenticate, userRouter);
-router.use('/quests', authenticate, questRouter);
+router.use('/users', userRouter);
+router.use('/quests', questRouter);
 
 export default router;

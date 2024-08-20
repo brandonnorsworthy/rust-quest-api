@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 
@@ -7,28 +8,28 @@ interface DecodedJWT {
   iat: number;
 }
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const authenticate = (request: Request, response: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = request.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return response.status(401).json({ message: 'Unauthorized' });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as DecodedJWT;
 
     if (!decoded) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return response.status(401).json({ message: 'Unauthorized' });
     }
 
-    req.tokenData = {
+    (request as any).tokenData = {
       id: decoded.id,
       username: decoded.username,
     };
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return response.status(401).json({ message: 'Unauthorized' });
   }
 };
 

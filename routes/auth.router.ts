@@ -1,9 +1,9 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 
-import authController from '../controllers/auth.controller.js';
-import { validate } from '../middleware/validate.js';
-import authSchema from '../validationSchemas/authSchema.js';
+import authController from '../controllers/auth.controller';
+import { validate } from '../middleware/validate';
+import authSchema from '../validationSchemas/authSchema';
 
 const authRouter = express.Router();
 

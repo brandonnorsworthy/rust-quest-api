@@ -1,18 +1,19 @@
-import questService from '../services/quest.service.js';
+import { Request, Response } from "express";
+import questService from '../services/quest.service';
 
 export default {
-  getQuests: async (req: Request, res: Response) => {
+  getQuests: async (request: Request, response: Response) => {
     try {
       const quests = await questService.getQuests();
 
       if (quests.length === 0) {
-        return res.status(404).send('No quests found');
+        return response.status(404).send('No quests found');
       }
 
-      // return res.send(req.user);
+      return response.send(quests);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('An error occurred while fetching users');
+      return response.status(500).send('An error occurred while fetching users');
     }
   }
 };
