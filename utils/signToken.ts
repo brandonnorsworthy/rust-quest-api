@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../../config.js';
+import { JWT_SECRET } from '../config';
 
-const signToken = (payload) => {
+const signToken = (payload: any): string => {
   const token = jwt.sign(payload, JWT_SECRET);
   return token;
 };
 
-const verifyToken = (token) => {
+const verifyToken = (token: string): boolean => {
   try {
     jwt.verify(token, JWT_SECRET);
     return true;

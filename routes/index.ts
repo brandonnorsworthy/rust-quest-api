@@ -1,9 +1,9 @@
 import express from 'express';
 
-import userRouter from './user.router.js';
-import authRouter from './auth.router.js';
-import questRouter from './quest.router.js';
-import authenticate from '../middleware/authenticate.js';
+import userRouter from './user.router';
+import authRouter from './auth.router';
+import questRouter from './quest.router';
+import authenticate from '../middleware/authenticate';
 
 const router = express.Router();
 

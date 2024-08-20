@@ -1,7 +1,7 @@
-import { executeQuery } from "../database/connection.js";
+import { executeQuery } from "../database/connection";
 
 export default {
-  getUserByUsername: async (username) => {
+  getUserByUsername: async (username: string) => {
     const query = `SELECT * FROM users WHERE username = $1`;
     const values = [username];
 
