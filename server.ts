@@ -18,8 +18,6 @@ app.get('/', authenticate, (request: Request, response: Response) => {
   const tokenData = (request as any).tokenData;
   if (tokenData) {
     response.send(`Hello, ${tokenData.username}!`);
-  } else {
-    response.send('Hello, guest!');
   }
 });
 
