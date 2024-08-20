@@ -2,7 +2,7 @@ import userService from '../services/user.service.js';
 import authService from '../services/auth.service.js';
 
 export default {
-  register: async (req, res) => {
+  register: async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
 
@@ -26,7 +26,7 @@ export default {
     }
   },
 
-  login: async (req, res) => {
+  login: async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
 

@@ -1,7 +1,7 @@
 import questService from '../services/quest.service.js';
 
 export default {
-  getQuests: async (req, res) => {
+  getQuests: async (req: Request, res: Response) => {
     try {
       const quests = await questService.getQuests();
 
@@ -9,7 +9,7 @@ export default {
         return res.status(404).send('No quests found');
       }
 
-      return res.send(req.user);
+      // return res.send(req.user);
     } catch (error) {
       console.error(error);
       return res.status(500).send('An error occurred while fetching users');

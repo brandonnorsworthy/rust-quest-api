@@ -1,8 +1,13 @@
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config';
 
-import { JWT_SECRET } from '../../config.js';
+interface DecodedJWT {
+  id: string;
+  username: string;
+  iat: number;
+}
 
-const authenticate = (req, res, next) => {
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
 
@@ -10,13 +15,16 @@ const authenticate = (req, res, next) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET) as DecodedJWT;
 
     if (!decoded) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    req.user = decoded
+    req.tokenData = {
+      id: decoded.id,
+      username: decoded.username,
+    };
 
     next();
   } catch (error) {

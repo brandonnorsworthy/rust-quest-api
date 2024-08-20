@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { register } from 'module';
 
 export default {
   register: Joi.object({
