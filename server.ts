@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', authenticate, (request: Request, response: Response) => {
+app.get('/', authenticate, (response: Response) => {
   const tokenData = (request as any).tokenData;
   if (tokenData) {
     response.send(`Hello, ${tokenData.username}!`);
