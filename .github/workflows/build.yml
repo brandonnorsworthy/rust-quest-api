@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      # - develop # Add other branches you want to protect
 
 jobs:
   build:
@@ -25,11 +24,8 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      # - name: Run tests (optional)
-      #   run: npm test # Ensure you have a test script in your package.json
-
-      - name: List files in dist directory
-        run: ls -la dist/
+      # - name: Run tests
+      #   run: npm test
 
       - name: Upload build artifacts
         if: success()
