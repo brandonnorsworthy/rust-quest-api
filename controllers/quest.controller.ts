@@ -13,7 +13,7 @@ export default {
       return response.send(quests);
     } catch (error) {
       console.error(error);
-      return response.status(500).send('An error occurred while fetching users');
+      return response.status(500).send('An error occurred while fetching quests');
     }
-  }
+  },
 };

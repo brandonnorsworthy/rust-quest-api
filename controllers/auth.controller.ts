@@ -14,16 +14,15 @@ export default {
       }
 
       const newUser = await authService.register(username, password);
-
       const token = await authService.createTokenSession(newUser, password);
       if (token === null) {
-        return response.status(400).json({ error: 'Issue creating token' });
+        throw new Error('Error creating token session');
       }
 
       return response.status(201).json({ token });
     } catch (error) {
-      console.error('Error during login:', error);
-      return response.status(500).json({ error: 'Internal server error' });
+      console.error('Error during register:', error);
+      return response.status(500).send('An error occurred while registering');
     }
   },
 
@@ -45,7 +44,7 @@ export default {
       return res.status(200).json({ token });
     } catch (error) {
       console.error('Error during login:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).send('An error occurred while logging in');
     }
   }
 }

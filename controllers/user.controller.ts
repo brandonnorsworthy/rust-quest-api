@@ -4,7 +4,7 @@ import { executeQuery } from "../database/connection";
 export default {
   getUsers: async (request: Request, response: Response) => {
     try {
-      const users = await executeQuery('SELECT * FROM users');
+      const users = await executeQuery('SELECT id, username, completed_quests, metadata FROM users');
 
       console.log(users)
 
