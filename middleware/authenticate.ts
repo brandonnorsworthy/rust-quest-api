@@ -8,6 +8,13 @@ interface DecodedJWT {
   iat: number;
 }
 
+export interface AuthenticatedRequest extends Request {
+  tokenData: {
+    userId: string;
+    username: string;
+  };
+}
+
 const authenticate = (request: Request, response: Response, next: NextFunction) => {
   try {
     const token = request.headers.authorization?.split(' ')[1];
@@ -22,8 +29,8 @@ const authenticate = (request: Request, response: Response, next: NextFunction) 
       return response.status(401).json({ message: 'Unauthorized' });
     }
 
-    (request as any).tokenData = {
-      id: decoded.id,
+    (request as AuthenticatedRequest).tokenData = {
+      userId: decoded.id,
       username: decoded.username,
     };
 
