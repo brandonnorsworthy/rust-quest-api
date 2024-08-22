@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from './authenticate';
 
 const isAdmin = (request: Request, response: Response, next: NextFunction) => {
-  console.log((request as AuthenticatedRequest).tokenData)
   const { role } = (request as AuthenticatedRequest).tokenData;
 
   if (!role) {
