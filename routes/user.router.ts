@@ -5,11 +5,11 @@ import isAdmin from '../middleware/isAdmin';
 const userRouter = express.Router();
 
 // user routes
+userRouter.post('/completed-quests/:questId', userController.completeQuest);
 userRouter.get('/completed-quests', userController.getCompletedQuests);
 
 // admin routes
-userRouter.use(isAdmin);
-userRouter.get('/', userController.getUsers);
-userRouter.get('/:username', userController.getUserByUsername);
+userRouter.get('/', isAdmin, userController.getUsers);
+userRouter.get('/:username', isAdmin, userController.getUserByUsername);
 
 export default userRouter;

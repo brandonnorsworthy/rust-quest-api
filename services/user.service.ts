@@ -34,5 +34,14 @@ export default {
     const values = [userId];
 
     return await executeQuery(query, values);
+  },
+
+  completeQuest: async (userId: number, questId: number) => {
+    const query = `UPDATE users
+    SET completed_quests = array_append(completed_quests, $1)
+    WHERE id = $2`;
+    const values = [questId, userId];
+
+    return await executeQuery(query, values);
   }
 }

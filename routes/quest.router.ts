@@ -11,9 +11,8 @@ questRouter.get('/', questController.getAllQuests);
 questRouter.get('/:id', validateParams(questSchema.idSchema), questController.getQuest);
 
 // admin routes
-questRouter.use(isAdmin);
-questRouter.post('/', validateBody(questSchema.create), questController.createQuest);
-questRouter.put('/:id', validateParams(questSchema.idSchema), validateBody(questSchema.update), questController.updateQuest);
-questRouter.delete('/:id', validateParams(questSchema.idSchema), questController.deleteQuest);
+questRouter.post('/', isAdmin, validateBody(questSchema.create), questController.createQuest);
+questRouter.put('/:id', isAdmin, validateParams(questSchema.idSchema), validateBody(questSchema.update), questController.updateQuest);
+questRouter.delete('/:id', isAdmin, validateParams(questSchema.idSchema), questController.deleteQuest);
 
 export default questRouter;
