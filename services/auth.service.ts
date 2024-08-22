@@ -2,7 +2,7 @@ import { executeQuery } from "../database/connection";
 import { comparePassword, hashPassword } from "../utils/passwordHash";
 import { signToken } from "../utils/signToken";
 
-interface User {
+export interface User {
   id: number;
   username: string;
   password: string;
@@ -33,7 +33,7 @@ export default {
       return null;
     }
 
-    const tokenData = { id: user.id, username: user.username, role: user.role };
+    const tokenData = { userId: user.id, username: user.username, role: user.role };
     return signToken(tokenData);
   }
 }

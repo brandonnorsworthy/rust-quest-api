@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 
 interface DecodedJWT {
-  id: string;
+  userId: string;
   username: string;
   role: string;
   iat: number;
