@@ -2,7 +2,14 @@ import { executeQuery } from "../database/connection";
 
 export default {
   getAllUsers: async () => {
-    const query = `SELECT * FROM users`;
+    const query = `SELECT
+      id,
+      username,
+      role,
+      oauth_provider,
+      oauth_id
+    FROM users
+    LIMIT 100;`;
 
     return await executeQuery(query);
   },

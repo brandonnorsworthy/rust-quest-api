@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { executeQuery } from "../database/connection";
 import userService from "../services/user.service";
+import { AuthenticatedRequest } from "../middleware/authenticate";
 
 export default {
   getUsers: async (request: Request, response: Response) => {
@@ -29,6 +30,7 @@ export default {
         return;
       }
 
+      delete(user.password);
       response.send(user);
     } catch (error) {
       console.error(error);
@@ -38,8 +40,8 @@ export default {
 
   getCompletedQuests: async (request: Request, response: Response) => {
     try {
-      const { id } = request.params;
-      const completedQuests = await userService.getCompletedQuests(parseInt(id));
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const completedQuests = await userService.getCompletedQuests(parseInt(userId));
 
       response.send(completedQuests);
     } catch (error) {
