@@ -27,7 +27,8 @@ export default {
       JOIN
         categories ON quests.category_id = categories.id
       ORDER BY
-        quests.id DESC;
+        quests.id DESC
+      LIMIT 25;
     `;
 
     return await executeQuery(query);

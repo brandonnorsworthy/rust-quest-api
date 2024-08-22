@@ -10,8 +10,10 @@ import authenticate from '../middleware/authenticate';
 
 const router = express.Router();
 
+// public routes
 router.use('/auth', authRouter);
 
+// private routes
 router.use('/users', authenticate, userRouter);
 router.use('/quests', authenticate, questRouter);
 router.use('/categories', authenticate, categoryRouter);

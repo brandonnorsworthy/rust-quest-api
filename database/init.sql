@@ -49,7 +49,7 @@ INSERT INTO categories (name) VALUES
 -- Insert 10 rows into users table
 INSERT INTO users (username, role, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
 ('zcog', 'admin', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('littefoot', 'user', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu.', 'google', 'google-id-123'),
+('littlefoot', 'user', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'google', 'google-id-123'),
 ('Cattasaurus', 'user', ARRAY[5, 6], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
 ('HandsomeJack', 'user', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
 ('luna', 'user', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'facebook', 'fb-id-456'),

@@ -9,7 +9,7 @@ export default {
       oauth_provider,
       oauth_id
     FROM users
-    LIMIT 100;`;
+    LIMIT 25;`;
 
     return await executeQuery(query);
   },

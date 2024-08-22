@@ -5,7 +5,6 @@ export default {
   getAllQuests: async (request: Request, response: Response) => {
     try {
       const quests = await questService.getQuests();
-
       if (quests.length === 0) {
         return response.status(404).send('No quests found');
       }
@@ -20,8 +19,8 @@ export default {
   getQuest: async (request: Request, response: Response) => {
     try {
       const questId = parseInt(request.params.id);
-      const quest = await questService.getQuest(questId);
 
+      const quest = await questService.getQuest(questId);
       if (!quest) {
         return response.status(404).send('Quest not found');
       }
@@ -38,13 +37,11 @@ export default {
       const { title, description, objectives, categoryId } = request.body;
 
       const quest = await questService.getQuestByTitle(title);
-
       if (quest) {
         return response.status(400).send('Quest already exists');
       }
 
       let { imageUrl } = request.body;
-
       if (!imageUrl) {
         imageUrl = 'https://via.placeholder.com/150';
       }
@@ -64,7 +61,6 @@ export default {
       const { title, description, objectives, imageUrl, categoryId } = request.body;
 
       const updatedQuest = await questService.updateQuest(questId, { title, description, objectives, imageUrl, categoryId });
-
       if (!updatedQuest) {
         return response.status(404).send('Quest not found');
       }
@@ -79,9 +75,9 @@ export default {
   deleteQuest: async (request: Request, response: Response) => {
     try {
       const questId = parseInt(request.params.id);
-      const deletedQuest = await questService.deleteQuest(questId);
 
-      if (!deletedQuest) {
+      const deletedQuest = await questService.deleteQuest(questId);
+      if (!deletedQuest || deletedQuest.count === 0) {
         return response.status(404).send('Quest not found');
       }
 
