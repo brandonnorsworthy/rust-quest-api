@@ -26,7 +26,11 @@ if (DATABASE.CONNECTION_STRING) {
  * @param expectSingleRow If true, will return the first row of the result; otherwise, will return all rows.
  * @returns A Promise that resolves to the result of the query.
  */
-export const executeQuery = async (queryString: string, queryValues: any[] = [], expectSingleRow: boolean = false): Promise<any[] | any> => {
+export const executeQuery = async (
+  queryString: string,
+  queryValues: any[] = [],
+  expectSingleRow: boolean = false
+) => {
   try {
     const result = await pool.query(queryString, queryValues);
 
