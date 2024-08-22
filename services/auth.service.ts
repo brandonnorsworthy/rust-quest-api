@@ -6,6 +6,7 @@ interface User {
   id: number;
   username: string;
   password: string;
+  role: string;
 }
 
 export default {
@@ -13,15 +14,12 @@ export default {
     try {
       const passwordHash = await hashPassword(password);
       const queryString = `
-        WITH inserted_user AS (
-          INSERT INTO users (username, password) 
-          VALUES ($1, $2)
-          RETURNING *
-        )
-        SELECT * FROM inserted_user
+        INSERT INTO users (username, password)
+        VALUES ($1, $2)
+        RETURNING *
       `;
-      const result = await executeQuery(queryString, [username, passwordHash], true);
-      return result;
+
+      return await executeQuery(queryString, [username, passwordHash], true);
     } catch (error) {
       throw new Error('Error during registration');
     }
@@ -35,6 +33,7 @@ export default {
       return null;
     }
 
-    return signToken({ id: user.id, username: user.username });
+    const tokenData = { id: user.id, username: user.username, role: user.role };
+    return signToken(tokenData);
   }
 }
