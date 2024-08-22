@@ -3,16 +3,14 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 
 interface DecodedJWT {
-  id: string;
+  userId: string;
   username: string;
+  role: string;
   iat: number;
 }
 
 export interface AuthenticatedRequest extends Request {
-  tokenData: {
-    userId: string;
-    username: string;
-  };
+  tokenData: DecodedJWT;
 }
 
 const authenticate = (request: Request, response: Response, next: NextFunction) => {
@@ -29,10 +27,7 @@ const authenticate = (request: Request, response: Response, next: NextFunction) 
       return response.status(401).json({ message: 'Unauthorized' });
     }
 
-    (request as AuthenticatedRequest).tokenData = {
-      userId: decoded.id,
-      username: decoded.username,
-    };
+    (request as AuthenticatedRequest).tokenData = { ...decoded };
 
     next();
   } catch (error) {
