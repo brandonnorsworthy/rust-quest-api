@@ -15,7 +15,15 @@ const authRateLimiter = rateLimit({
 
 authRouter.use(authRateLimiter);
 
-authRouter.post('/register', validateBody(authSchema.register), authController.register);
-authRouter.post('/login', validateBody(authSchema.login), authController.login);
+authRouter.post(
+  '/register',
+  validateBody(authSchema.register),
+  authController.register
+);
+authRouter.post(
+  '/login',
+  validateBody(authSchema.login),
+  authController.login
+);
 
 export default authRouter;
