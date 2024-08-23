@@ -38,10 +38,3 @@ jobs:
           BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
           BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
         run: npm test
-
-      - name: Upload build artifacts
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
