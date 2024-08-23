@@ -22,25 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
-        run: npm run build
-
-      - name: Check if init.sql has changed
-        id: init_sql_changed
+      - name: Load environment variables
         run: |
-          git diff --exit-code HEAD^ HEAD -- database/init.sql || echo "true" > init_sql_changed.txt
-          if [ -f init_sql_changed.txt ]; then
-            echo "init_sql_changed=true" >> $GITHUB_ENV
-          else
-            echo "init_sql_changed=false" >> $GITHUB_ENV
+          if [ -f .env ]; then
+            export $(cat .env | xargs)
           fi
 
-      - name: Reset PostgreSQL database if init.sql has changed
-        if: env.init_sql_changed == 'true'
-        run: |
-          psql -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER }} -d ${{ secrets.DB_NAME }} -f database/init.sql
-        env:
-          PGPASSWORD: ${{ secrets.DB_PASSWORD }}
+      - name: Build the project
+        run: npm run build
 
       - name: Run tests
         run: npm test
