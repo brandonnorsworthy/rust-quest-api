@@ -20,9 +20,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Check environment variables
+      - name: Create environment file
         run: |
-          echo "MY_SECRET_VARIABLE=${MY_SECRET_VARIABLE}"
+          echo "POSTGRES_USER=${secrets.POSTGRES_USER}" > .env
+          echo "POSTGRES_HOST=${secrets.POSTGRES_HOST}" > .env
+          echo "POSTGRES_DATABASE=${secrets.POSTGRES_DATABASE}" > .env
+          echo "POSTGRES_PASSWORD=${secrets.POSTGRES_PASSWORD}" > .env
+          echo "POSTGRES_PORT=${secrets.POSTGRES_PORT}" > .env
 
       - name: Build the project
         run: npm run build
