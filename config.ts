@@ -5,6 +5,7 @@ export interface DatabaseConfig {
   DATABASE: string;
   PASSWORD: string;
   PORT: string;
+  SSL: boolean;
 }
 
 export const DATABASE: DatabaseConfig = {
@@ -14,6 +15,7 @@ export const DATABASE: DatabaseConfig = {
   DATABASE: process.env.POSTGRES_DATABASE!,
   PASSWORD: process.env.POSTGRES_PASSWORD!,
   PORT: process.env.POSTGRES_PORT!,
+  SSL: process.env.POSTGRES_SSL === 'true',
 };
 
 export const EXPRESS_PORT: number = parseInt(process.env.EXPRESS_PORT!);
