@@ -28,6 +28,19 @@ jobs:
         run: npm run build
 
       - name: Run tests
+        env:
+          NODE_ENV: ${{ github.env }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_SSL: ${{ secrets.POSTGRES_SSL }}
+
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+          BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
+          BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
         run: npm test
 
       - name: Deploy to S3
@@ -36,4 +49,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1"
         run: |
-          aws s3 sync dist/ ${{ secrets.S3_PATH_PRODUCTION }} --delete
+          aws s3 sync dist/ ${{ secrets.S3_PATH }} --delete
