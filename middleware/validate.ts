@@ -1,11 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import { ObjectSchema } from 'joi';
 
-export const validate = (schema: ObjectSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body);
+export const validateParams = (schema: any) => {
+  return (request: Request, response: Response, next: NextFunction) => {
+    const { error } = schema.validate(request.params);
     if (error) {
-      return res.status(400).json({ error: error.details[0].message });
+      return response.status(400).json({ error: error.details[0].message });
+    }
+    next();
+  };
+};
+
+export const validateBody = (schema: ObjectSchema) => {
+  return (request: Request, response: Response, next: NextFunction) => {
+    const { error } = schema.validate(request.body);
+    if (error) {
+      return response.status(400).json({ error: error.details[0].message });
     }
     next();
   };
