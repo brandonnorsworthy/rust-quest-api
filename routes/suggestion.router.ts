@@ -6,6 +6,10 @@ import suggestionSchema from '../validationSchemas/suggestionSchema';
 const suggestionRouter = express.Router();
 
 suggestionRouter.get('/', suggestionController.getSuggestions);
-suggestionRouter.post('/', validateBody(suggestionSchema.suggestion), suggestionController.createSuggestion);
+suggestionRouter.post(
+  '/',
+  validateBody(suggestionSchema.suggestion),
+  suggestionController.createSuggestion
+);
 
 export default suggestionRouter;

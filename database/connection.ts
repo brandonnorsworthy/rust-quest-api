@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { DATABASE } from '../config';
 
-let pool = null;
+let pool: Pool;
 
 if (DATABASE.CONNECTION_STRING) {
   pool = new Pool({
@@ -14,6 +14,7 @@ if (DATABASE.CONNECTION_STRING) {
     database: DATABASE.DATABASE,
     password: DATABASE.PASSWORD,
     port: parseInt(DATABASE.PORT, 10),
+    ssl: DATABASE.SSL ? { rejectUnauthorized: false } : false,
   });
 } else {
   throw new Error('No Database Configuration Found');
@@ -46,3 +47,5 @@ export const executeQuery = async (
     throw new Error(`Error executing query: ${error.message} | Query: ${queryString}`);
   }
 };
+
+export default pool;
