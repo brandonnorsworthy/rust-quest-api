@@ -16,17 +16,13 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
-        with:
-          node-version: "20"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Load environment variables
+      - name: Check environment variables
         run: |
-          if [ -f .env ]; then
-            export $(cat .env | xargs)
-          fi
+          echo "MY_SECRET_VARIABLE=${MY_SECRET_VARIABLE}"
 
       - name: Build the project
         run: npm run build
