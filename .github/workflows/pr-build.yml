@@ -24,8 +24,8 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      # - name: Run tests
-      #   run: npm test
+      - name: Run tests
+        run: npm test
 
       - name: Upload build artifacts
         if: success()
