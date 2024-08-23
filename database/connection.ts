@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { DATABASE } from '../config';
 
-let pool = null;
+let pool: Pool;
 
 if (DATABASE.CONNECTION_STRING) {
   pool = new Pool({
@@ -46,3 +46,5 @@ export const executeQuery = async (
     throw new Error(`Error executing query: ${error.message} | Query: ${queryString}`);
   }
 };
+
+export default pool;
