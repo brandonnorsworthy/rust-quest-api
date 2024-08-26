@@ -14,7 +14,7 @@ if (DATABASE.CONNECTION_STRING) {
     database: DATABASE.DATABASE,
     password: DATABASE.PASSWORD,
     port: parseInt(DATABASE.PORT, 10),
-    ssl: DATABASE.SSL ? { rejectUnauthorized: false } : false,
+    ssl: DATABASE.SSL ? true : false,
   });
 } else {
   throw new Error('No Database Configuration Found');
