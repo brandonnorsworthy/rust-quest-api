@@ -76,5 +76,5 @@ jobs:
             cd app
             tar -xzvf dist.tar.gz
             npm install
-            npm run start
+            pm2 start npm -- run start
           EOF
