@@ -8,9 +8,8 @@ on:
     branches:
       - main
 
-
 jobs:
-  build:
+  cicd-dev:
     runs-on: ubuntu-latest
     environment: dev
 
@@ -27,20 +26,6 @@ jobs:
       - name: Build the project
         run: npm run build
 
-  test:
-    runs-on: ubuntu-latest
-    environment: dev
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Run tests
         env:
           NODE_ENV: ${{ github.env }}
@@ -55,13 +40,6 @@ jobs:
           BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
         run: npm test
 
-
-  deploy:
-    runs-on: ubuntu-latest
-    environment: dev
-    needs: [build, test]
-
-    steps:
       - name: Copy files to dist
         run: |
           cp package.json dist/
