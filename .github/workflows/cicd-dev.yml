@@ -69,6 +69,7 @@ jobs:
           scp -i ~/ssh_key -o StrictHostKeyChecking=no ./dist.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/
           ssh -i ~/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
             cd ~
+            rm -rf app
             mkdir app
             mv dist.tar.gz ./app
             cd app
