@@ -43,10 +43,17 @@ jobs:
       #     BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
       #   run: npm test
 
-      - name: Deploy to S3
+      - name: Deploy to EC2
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_IP: ${{ secrets.EC2_IP }}
         run: |
-          aws s3 sync dist/ ${{ secrets.S3_PATH }} --delete
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
+          chmod 600 ~/ssh_key
+          scp -i ~/ssh_key -o StrictHostKeyChecking=no -r ./dist/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/app/
+          ssh -i ~/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
+            cd /home/ec2-user/app/
+            npm install --production
+            pm2 restart all || pm2 start dist/server.js --name "my-app"
+          EOF
