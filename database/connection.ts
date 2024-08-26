@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import fs from 'fs';
 import { DATABASE } from '../config';
 
 let pool: Pool;
@@ -14,7 +15,9 @@ if (DATABASE.CONNECTION_STRING) {
     database: DATABASE.DATABASE,
     password: DATABASE.PASSWORD,
     port: parseInt(DATABASE.PORT, 10),
-    ssl: DATABASE.SSL ? true : false,
+    ssl: DATABASE.SSL ? {
+      ca: fs.readFileSync(__dirname + '/global-bundle.pem').toString(),
+    } : undefined,
   });
 } else {
   throw new Error('No Database Configuration Found');
