@@ -35,6 +35,6 @@ dist-ssr
 *.env
 
 # tests
-coverage/
+coverage/*
 
-ignore/
+ignore/*

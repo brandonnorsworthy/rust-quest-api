@@ -1,4 +1,4 @@
-name: Build and Test
+name: pr-build-and-test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  pr-build:
+  build-and-test:
     runs-on: ubuntu-latest
     environment: dev
 
@@ -25,16 +25,14 @@ jobs:
 
       - name: Run tests
         env:
-          NODE_ENV: test
+          NODE_ENV: ${{ github.env }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           POSTGRES_SSL: ${{ secrets.POSTGRES_SSL }}
-
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-
           BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
           BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
         run: npm test
