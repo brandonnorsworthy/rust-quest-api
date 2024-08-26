@@ -48,6 +48,7 @@ jobs:
       - name: Create environment file
         run: |
           echo "NODE_ENV=${{ github.env }}" > dist/.env
+          echo "EXPRESS_PORT=${{ secrets.EXPRESS_PORT }}" >> dist/.env
           echo "POSTGRES_URL=${{ secrets.CONNECTION_STRING }}" >> dist/.env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> dist/.env
           echo "BCRYPT_PEPPER=${{ secrets.BCRYPT_PEPPER }}" >> dist/.env
