@@ -47,16 +47,12 @@ jobs:
       #   run: npm test
 
       - name: Deploy to EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_IP: ${{ secrets.EC2_IP }}
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
           chmod 600 ~/ssh_key
           scp -i ~/ssh_key -o StrictHostKeyChecking=no -r ./dist/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/app/
           ssh -i ~/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
             cd /home/ec2-user/app/
-            npm install --production
-            pm2 restart all || pm2 start dist/server.js --name "my-app"
+            npm install
+            pm2 restart all || pm2 start dist/server.js
           EOF
