@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  pr-build:
+  build:
     runs-on: ubuntu-latest
     environment: dev
 
@@ -23,18 +23,25 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      # - name: Run tests
-      #   env:
-      #     NODE_ENV: test
-      #     POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      #     POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-      #     POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
-      #     POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      #     POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-      #     POSTGRES_SSL: ${{ secrets.POSTGRES_SSL }}
+  test:
+    runs-on: ubuntu-latest
+    environment: dev
 
-      #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      #     BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
-      #     BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
-      #   run: npm test
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        env:
+          NODE_ENV: ${{ github.env }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
+          BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
+        run: npm test

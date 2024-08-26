@@ -1,0 +1,92 @@
+name: Build, Test, and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Build the project
+        run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        env:
+          NODE_ENV: ${{ github.env }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
+          BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
+        run: npm test
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: [build, test]
+
+    steps:
+      - name: Copy files to dist
+        run: |
+          cp package.json dist/
+          cp package-lock.json dist/
+
+      - name: Create environment file
+        run: |
+          echo "NODE_ENV=${{ github.env }}" > dist/.env
+          echo "POSTGRES_URL=${{ secrets.POSTGRES_URL }}" >> dist/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> dist/.env
+          echo "BCRYPT_PEPPER=${{ secrets.BCRYPT_PEPPER }}" >> dist/.env
+          echo "BCRYPT_SALT_ROUNDS=${{ secrets.BCRYPT_SALT_ROUNDS }}" >> dist/.env
+
+      - name: Create tarball
+        run: |
+          tar -czvf dist.tar.gz -C dist .
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          scp -i ~/ssh_key -o StrictHostKeyChecking=no ./dist.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/
+          ssh -i ~/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
+            cd ~
+            mkdir app
+            mv dist.tar.gz ./app
+            cd app
+            tar -xzvf dist.tar.gz
+            npm install
+            npm run start
+          EOF

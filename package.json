@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node server.js",
     "dev": "ts-node-dev server.ts",
     "test": "jest",
     "coverage": "jest --coverage"
