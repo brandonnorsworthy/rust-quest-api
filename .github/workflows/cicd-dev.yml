@@ -75,5 +75,4 @@ jobs:
             tar -xzvf dist.tar.gz
             npm install
             pm2 start npm --name app -- run start
-            pm2 status app
           EOF
