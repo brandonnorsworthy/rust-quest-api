@@ -26,12 +26,14 @@ jobs:
       - name: Run tests
         env:
           NODE_ENV: ${{ github.env }}
+
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           POSTGRES_SSL: ${{ secrets.POSTGRES_SSL }}
+
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           BCRYPT_PEPPER: ${{ secrets.BCRYPT_PEPPER }}
           BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
@@ -41,12 +43,20 @@ jobs:
         run: |
           cp package.json dist/
           cp package-lock.json dist/
+          cp *.pem dist/
 
       - name: Create environment file
         run: |
           echo "NODE_ENV=${{ github.env }}" > dist/.env
           echo "EXPRESS_PORT=${{ secrets.EXPRESS_PORT }}" >> dist/.env
-          echo "POSTGRES_URL=${{ secrets.CONNECTION_STRING }}" >> dist/.env
+
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> dist/.env
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> dist/.env
+          echo "POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}" >> dist/.env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> dist/.env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> dist/.env
+          echo "POSTGRES_SSL=${{ secrets.POSTGRES_SSL }}" >> dist/.env
+
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> dist/.env
           echo "BCRYPT_PEPPER=${{ secrets.BCRYPT_PEPPER }}" >> dist/.env
           echo "BCRYPT_SALT_ROUNDS=${{ secrets.BCRYPT_SALT_ROUNDS }}" >> dist/.env
