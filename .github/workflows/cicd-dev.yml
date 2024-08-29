@@ -46,6 +46,7 @@ jobs:
         run: |
           cp package.json dist/
           cp package-lock.json dist/
+          cp *.pem dist/
 
       - name: Create environment file
         run: |

@@ -8,7 +8,7 @@ if (DATABASE.CONNECTION_STRING) {
   pool = new Pool({
     connectionString: DATABASE.CONNECTION_STRING,
     ssl: DATABASE.SSL ? {
-      ca: fs.readFileSync(__dirname + '/global-bundle.pem').toString(),
+      ca: fs.readFileSync(__dirname + '/../global-bundle.pem').toString(),
     } : undefined,
   });
 } else if (DATABASE.USER && DATABASE.HOST && DATABASE.DATABASE && DATABASE.PASSWORD && DATABASE.PORT) {
@@ -19,7 +19,7 @@ if (DATABASE.CONNECTION_STRING) {
     password: DATABASE.PASSWORD,
     port: parseInt(DATABASE.PORT, 10),
     ssl: DATABASE.SSL ? {
-      ca: fs.readFileSync(__dirname + '/global-bundle.pem').toString(),
+      ca: fs.readFileSync(__dirname + '/../global-bundle.pem').toString(),
     } : undefined,
   });
 } else {
