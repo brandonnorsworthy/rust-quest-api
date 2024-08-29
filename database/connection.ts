@@ -7,6 +7,9 @@ let pool: Pool;
 if (DATABASE.CONNECTION_STRING) {
   pool = new Pool({
     connectionString: DATABASE.CONNECTION_STRING,
+    ssl: DATABASE.SSL ? {
+      ca: fs.readFileSync(__dirname + '/global-bundle.pem').toString(),
+    } : undefined,
   });
 } else if (DATABASE.USER && DATABASE.HOST && DATABASE.DATABASE && DATABASE.PASSWORD && DATABASE.PORT) {
   pool = new Pool({

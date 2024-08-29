@@ -9,6 +9,7 @@ import authenticate from './middleware/authenticate';
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
