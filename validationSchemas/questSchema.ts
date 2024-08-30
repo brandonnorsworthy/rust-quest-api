@@ -8,6 +8,10 @@ export default {
       .required(),
   }),
 
+  filterSchema: Joi.object({
+    filters: Joi.string()
+  }),
+
   create: Joi.object({
     title: Joi.string()
       .min(1)

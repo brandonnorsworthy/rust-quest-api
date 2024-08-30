@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import questService from '../services/quest.service';
+import { AuthenticatedRequest } from "../middleware/authenticate";
 
 export default {
   getAllQuests: async (request: Request, response: Response) => {
@@ -26,6 +27,24 @@ export default {
       }
 
       return response.send(quest);
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while fetching quest');
+    }
+  },
+
+  getRandomQuest: async (request: Request, response: Response) => {
+    try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const filters = request.query;
+      if (filters) {
+        //todo implement filters
+        // filters.split(",")
+      }
+
+      const randomQuest = await questService.getRandomQuestByUserId(userId);
+
+      return response.send(randomQuest);
     } catch (error) {
       console.error(error);
       return response.status(500).send('An error occurred while fetching quest');

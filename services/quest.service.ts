@@ -54,6 +54,22 @@ export default {
     return await executeQuery(query, values, true);
   },
 
+  getRandomQuestByUserId: async (userId: string) => {
+    const query = `SELECT *
+      FROM quests
+      WHERE id NOT IN (
+        SELECT UNNEST(completed_quests)
+        FROM users
+        WHERE id = $1
+      )
+      ORDER BY RANDOM()
+      LIMIT 1;
+    `;
+    const values = [userId];
+
+    return await executeQuery(query, values, true);
+  },
+
   getQuestByTitle: async (title: string) => {
     const query = `SELECT * FROM quests WHERE title = $1;`;
     const values = [title];

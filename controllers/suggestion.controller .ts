@@ -7,7 +7,7 @@ export default {
     try {
       const suggestions = await suggestionService.getSuggestions();
 
-      if (suggestions.length === 0) {
+      if (!suggestions || suggestions.length === 0) {
         return response.status(404).send('No suggestions found');
       }
 
