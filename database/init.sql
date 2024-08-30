@@ -23,7 +23,8 @@ CREATE TABLE suggestions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL
+    description TEXT NOT NULL,
+    objectives TEXT[] NOT NULL
 );
 
 -- Quests table
@@ -59,15 +60,44 @@ INSERT INTO users (username, role, completed_quests, metadata, password, oauth_p
 ('pageinabook', 'user', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
 ('notacoconut', 'admin', ARRAY[7, 9], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'google', 'google-id-234');
 
--- Insert 10 rows into suggestions table
-INSERT INTO suggestions (user_id, title, description) VALUES
-(4, 'expand the base', 'Add a second floor to your base'),
-(5, 'scout for enemies', 'Check nearby areas for enemy players'),
-(6, 'gather supplies', 'Collect wood, stone, and metal ore for upgrades'),
-(7, 'build a turret', 'Place an automated turret near your base entrance'),
-(8, 'upgrade weapons', 'Craft better weapons for defense'),
-(9, 'prepare for winter', 'Stockpile food and resources for the upcoming winter'),
-(10, 'team up', 'Find other players to team up with for raids');
+-- Insert 10 rows into suggestions table with defined objectives
+INSERT INTO suggestions (user_id, title, description, objectives) VALUES
+(4, 'expand the base', 'Add a second floor to your base', ARRAY[
+    'Gather 1000 wood for construction',
+    'Craft and place 20 floor tiles',
+    'Install a metal door for added security'
+]),
+(5, 'scout for enemies', 'Check nearby areas for enemy players', ARRAY[
+    'Travel to the nearest monument and observe activity',
+    'Use binoculars to scan the surroundings for potential threats',
+    'Report back to the team with findings'
+]),
+(6, 'gather supplies', 'Collect wood, stone, and metal ore for upgrades', ARRAY[
+    'Chop down 50 trees for wood',
+    'Mine 100 stone nodes',
+    'Collect 200 metal ore from nearby rocks'
+]),
+(7, 'build a turret', 'Place an automated turret near your base entrance', ARRAY[
+    'Craft the turret using 1000 metal fragments and 200 high-quality metal',
+    'Gather and load 500 ammo rounds into the turret',
+    'Position the turret at the base entrance for maximum coverage'
+]),
+(8, 'upgrade weapons', 'Craft better weapons for defense', ARRAY[
+    'Collect 300 scrap for weapon blueprints',
+    'Craft a semi-automatic rifle',
+    'Gather 200 gunpowder for ammunition'
+]),
+(9, 'prepare for winter', 'Stockpile food and resources for the upcoming winter', ARRAY[
+    'Hunt and store 50 pieces of cooked meat',
+    'Gather 100 cloth for clothing and warmth',
+    'Build 3 campfires for heating'
+]),
+(10, 'team up', 'Find other players to team up with for raids', ARRAY[
+    'Visit the nearest outpost to meet potential allies',
+    'Exchange resources to build trust',
+    'Organize a raid schedule with new team members'
+]);
+
 
 -- Insert 10 rows into quests table
 INSERT INTO quests (category_id, description, title, objectives, image_url) VALUES
