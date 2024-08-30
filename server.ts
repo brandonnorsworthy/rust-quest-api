@@ -2,16 +2,34 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import morgan from 'morgan';
-import { EXPRESS_PORT } from './config';
 
+import { ALLOWED_ORIGINS, EXPRESS_PORT } from './config';
 import Router from './routes';
 import authenticate from './middleware/authenticate';
 
 const app = express();
 
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
+// restrict cors
+app.use(cors(corsOptions));
+// allow preflight requests
+app.options('*', cors(corsOptions));
+
+// trust nginx proxy
 app.set('trust proxy', 1);
+// log requests
 app.use(morgan('dev'));
-app.use(cors());
+// parse json and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

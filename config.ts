@@ -20,6 +20,8 @@ export const DATABASE: DatabaseConfig = {
 
 export const EXPRESS_PORT: number = parseInt(process.env.EXPRESS_PORT!);
 
+export const ALLOWED_ORIGINS: string[] = process.env.ALLOWED_ORIGINS!.split(',');
+
 export const BCRYPT_SALT_ROUNDS: number = parseInt(process.env.BCRYPT_SALT_ROUNDS!);
 export const BCRYPT_PEPPER: string = process.env.BCRYPT_Pepper!;
 
