@@ -26,6 +26,8 @@ jobs:
       - name: Run tests
         env:
           NODE_ENV: ${{ github.env }}
+          EXPRESS_PORT: ${{ secrets.EXPRESS_PORT }}
+          ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
 
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -49,6 +51,7 @@ jobs:
         run: |
           echo "NODE_ENV=${{ github.env }}" > dist/.env
           echo "EXPRESS_PORT=${{ secrets.EXPRESS_PORT }}" >> dist/.env
+          echo "ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}" >> dist/.env
 
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> dist/.env
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> dist/.env
