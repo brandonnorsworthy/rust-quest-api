@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import morgan from 'morgan';
@@ -32,6 +32,15 @@ app.use(morgan('dev'));
 // parse json and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// error handling middleware
+app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
+  if (error instanceof SyntaxError && 'body' in error) {
+    response.status(400).json({ error: 'Bad Request, Check for syntax errors or incorrect formatting' });
+  } else {
+    next(error);
+  }
+});
 
 app.get('/', authenticate, (request: Request, response: Response) => {
   const tokenData = (request as any).tokenData;

@@ -1,6 +1,6 @@
 import express from 'express';
 import questController from '../controllers/quest.controller';
-import { validateBody, validateParams } from '../middleware/validate';
+import { validateBody, validateParams, validateQuery } from '../middleware/validate';
 import questSchema from '../validationSchemas/questSchema';
 import isAdmin from '../middleware/isAdmin';
 
@@ -8,6 +8,10 @@ const questRouter = express.Router();
 
 // user routes
 questRouter.get('/', questController.getAllQuests);
+questRouter.get('/random-quest',
+  validateQuery(questSchema.filterSchema),
+  questController.getRandomQuest
+)
 questRouter.get(
   '/:id',
   validateParams(questSchema.idSchema),
