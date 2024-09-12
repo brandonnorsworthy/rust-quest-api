@@ -101,13 +101,13 @@ INSERT INTO suggestions (user_id, title, description, objectives) VALUES
 
 -- Insert 10 rows into quests table
 INSERT INTO quests (category_id, description, title, objectives, image_url) VALUES
-((SELECT id FROM categories WHERE name='PVP'), 'Next locked crate that drops, contest it for yourself', 'Try to Claim a Locked Crate', ARRAY['kill_all_scientists','escape_with_the_loot'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Survival'), 'Gather resources to survive the night', 'Survive the Night', ARRAY['gather_wood','find_shelter'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Exploration'), 'Discover a new monument on the map', 'Find a New Monument', ARRAY['explore_map','mark_location'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Crafting'), 'Craft advanced armor for better protection', 'Create Advanced Armor', ARRAY['gather_materials','craft_armor'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='PVE'), 'Clear out the bandit camp for resources', 'Clear the Bandit Camp', ARRAY['kill_bandits','loot_the_camp'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Defense'), 'Reinforce your base with stronger walls and doors', 'Fortify Your Base', ARRAY['upgrade_walls','install_traps'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Trade'), 'Trade resources with other players', 'Barter for Supplies', ARRAY['find_traders','negotiate_deals'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='PVP'), 'Defeat an enemy player in combat', 'Engage in PVP', ARRAY['locate_enemy','win_fight'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Survival'), 'Stay alive during a harsh storm', 'Survive the Storm', ARRAY['find_shelter','keep_warm'], 'https://fakeimg.pl/600x400'),
-((SELECT id FROM categories WHERE name='Exploration'), 'Map out the entire island', 'Map the Island', ARRAY['explore_north','explore_south','explore_east','explore_west'], 'https://fakeimg.pl/600x400');
+((SELECT id FROM categories WHERE name='PVP'), 'Next locked crate that drops, contest it for yourself', 'Try to Claim a Locked Crate', ARRAY['kill_all_scientists','escape_with_the_loot'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Survival'), 'Gather resources to survive the night', 'Survive the Night', ARRAY['gather_wood','find_shelter'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Exploration'), 'Discover a new monument on the map', 'Find a New Monument', ARRAY['explore_map','mark_location'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Crafting'), 'Craft advanced armor for better protection', 'Create Advanced Armor', ARRAY['gather_materials','craft_armor'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='PVE'), 'Clear out the bandit camp for resources', 'Clear the Bandit Camp', ARRAY['kill_bandits','loot_the_camp'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Defense'), 'Reinforce your base with stronger walls and doors', 'Fortify Your Base', ARRAY['upgrade_walls','install_traps'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Trade'), 'Trade resources with other players', 'Barter for Supplies', ARRAY['find_traders','negotiate_deals'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='PVP'), 'Defeat an enemy player in combat', 'Engage in PVP', ARRAY['locate_enemy','win_fight'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Survival'), 'Stay alive during a harsh storm', 'Survive the Storm', ARRAY['find_shelter','keep_warm'], 'https://questsandbox.s3.amazonaws.com/mission.png'),
+((SELECT id FROM categories WHERE name='Exploration'), 'Map out the entire island', 'Map the Island', ARRAY['explore_north','explore_south','explore_east','explore_west'], 'https://questsandbox.s3.amazonaws.com/mission.png');

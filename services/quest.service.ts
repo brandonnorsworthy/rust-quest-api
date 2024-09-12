@@ -55,16 +55,27 @@ export default {
   },
 
   getRandomQuestByUserId: async (userId: string) => {
-    const query = `SELECT *
-      FROM quests
-      WHERE id NOT IN (
+    const query = `
+    SELECT
+      quests.id,
+      quests.title,
+      quests.description,
+      quests.objectives,
+      quests.image_url,
+      categories.name AS category
+    FROM
+      quests
+    JOIN
+      categories ON quests.category_id = categories.id
+    WHERE
+      quests.id NOT IN (
         SELECT UNNEST(completed_quests)
         FROM users
         WHERE id = $1
       )
-      ORDER BY RANDOM()
-      LIMIT 1;
-    `;
+    ORDER BY RANDOM()
+    LIMIT 1;
+  `;
     const values = [userId];
 
     return await executeQuery(query, values, true);
