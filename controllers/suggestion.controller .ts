@@ -5,7 +5,8 @@ import suggestionService from "../services/suggestion.service";
 export default {
   getSuggestions: async (request: Request, response: Response) => {
     try {
-      const suggestions = await suggestionService.getSuggestions();
+      const { page } = request.query;
+      const suggestions = await suggestionService.getSuggestions(Number(page));
 
       if (!suggestions || suggestions.length === 0) {
         return response.status(404).send('No suggestions found');
