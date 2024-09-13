@@ -23,6 +23,6 @@ export const EXPRESS_PORT: number = parseInt(process.env.EXPRESS_PORT!);
 export const ALLOWED_ORIGINS: string[] = process.env.ALLOWED_ORIGINS!.split(',');
 
 export const BCRYPT_SALT_ROUNDS: number = parseInt(process.env.BCRYPT_SALT_ROUNDS!);
-export const BCRYPT_PEPPER: string = process.env.BCRYPT_Pepper!;
+export const BCRYPT_PEPPER: string = process.env.BCRYPT_PEPPER!;
 
 export const JWT_SECRET: string = process.env.JWT_SECRET!;

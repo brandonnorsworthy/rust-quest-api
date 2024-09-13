@@ -48,16 +48,16 @@ INSERT INTO categories (name) VALUES
 
 -- Insert 10 rows into users table
 INSERT INTO users (username, role, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
-('zcog', 'admin', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('littlefoot', 'user', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'google', 'google-id-123'),
-('Cattasaurus', 'user', ARRAY[5, 6], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('HandsomeJack', 'user', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('luna', 'user', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'facebook', 'fb-id-456'),
-('SugarCubeBlood', 'user', ARRAY[4, 6], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('CaptainSparklez', 'user', ARRAY[7, 8], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'twitter', 'tw-id-789'),
-('zezima', 'admin', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('pageinabook', 'user', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', NULL, NULL),
-('notacoconut', 'admin', ARRAY[7, 9], '{"sound": true}', '$2b$10$2iWlcbpf1MYROBYodo/4yufNXOpGzwiQenhLjyK3I/D4Y.q3V4aEu', 'google', 'google-id-234');
+('zcog', 'admin', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('littlefoot', 'user', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-123'),
+('Cattasaurus', 'user', ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('HandsomeJack', 'user', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('luna', 'user', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'facebook', 'fb-id-456'),
+('SugarCubeBlood', 'user', ARRAY[4, 6], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('CaptainSparklez', 'user', ARRAY[7, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'twitter', 'tw-id-789'),
+('zezima', 'admin', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('pageinabook', 'user', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('notacoconut', 'admin', ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-234');
 
 -- Insert 10 rows into suggestions table without objectives
 INSERT INTO suggestions (user_id, title, description) VALUES
