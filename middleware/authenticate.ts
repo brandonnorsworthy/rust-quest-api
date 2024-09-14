@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
+import Role from '../models/role';
 
 interface DecodedJWT {
-  userId: string;
+  userId: number;
   username: string;
-  role: string;
+  role: Role;
   iat: number;
 }
 

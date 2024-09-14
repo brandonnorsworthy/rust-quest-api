@@ -1,8 +1,8 @@
 -- db-init/init.sql
 -- postgresql database initialization script
 
--- Categories table
-CREATE TABLE categories (
+-- Roles table
+CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
@@ -11,12 +11,28 @@ CREATE TABLE categories (
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    role VARCHAR(10) NOT NULL DEFAULT 'user',
+    email VARCHAR(255) UNIQUE,
+    role_id INTEGER REFERENCES roles(id) DEFAULT 1,
     password VARCHAR(255),
     metadata JSONB NOT NULL DEFAULT '{}',
     completed_quests INTEGER[] NOT NULL DEFAULT ARRAY[]::INTEGER[],
     oauth_provider VARCHAR(50), -- For OAuth integration (e.g., Google, Facebook)
-    oauth_id VARCHAR(255) -- ID from the OAuth provider
+    oauth_id VARCHAR(255), -- ID from the OAuth provider
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    last_login TIMESTAMP DEFAULT NULL,
+    login_count INTEGER DEFAULT 1
+);
+
+-- Categories table
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    deleted_by INTEGER REFERENCES users(id) DEFAULT NULL
 );
 
 -- Suggestions table
@@ -24,7 +40,11 @@ CREATE TABLE suggestions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    deleted_by INTEGER REFERENCES users(id) DEFAULT NULL
 );
 
 -- Quests table
@@ -35,8 +55,18 @@ CREATE TABLE quests (
     title VARCHAR(255) NOT NULL,
     objectives TEXT[] NOT NULL,
     image_url VARCHAR(255),
-    user_id INTEGER REFERENCES users(id)
+    suggested_by INTEGER REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    deleted_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    soft_deleted BOOLEAN DEFAULT FALSE
 );
+
+INSERT INTO roles (name) VALUES
+('user'),
+('moderator'),
+('admin');
 
 -- Insert categories into categories table
 INSERT INTO categories (name) VALUES
@@ -49,17 +79,17 @@ INSERT INTO categories (name) VALUES
 ('Trade');
 
 -- Insert 10 rows into users table
-INSERT INTO users (username, role, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
-('zcog', 'admin', ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('littlefoot', 'user', ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-123'),
-('Cattasaurus', 'user', ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('HandsomeJack', 'user', ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('luna', 'user', ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'facebook', 'fb-id-456'),
-('SugarCubeBlood', 'user', ARRAY[4, 6], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('CaptainSparklez', 'user', ARRAY[7, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'twitter', 'tw-id-789'),
-('zezima', 'admin', ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('pageinabook', 'user', ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
-('notacoconut', 'admin', ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-234');
+INSERT INTO users (username, role_id, completed_quests, metadata, password, oauth_provider, oauth_id) VALUES
+('zcog', 3, ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('littlefoot', 2, ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-123'),
+('Cattasaurus', 1, ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('HandsomeJack', 1, ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('luna', 1, ARRAY[3, 5, 7], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'facebook', 'fb-id-456'),
+('SugarCubeBlood', 1, ARRAY[4, 6], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('CaptainSparklez', 1, ARRAY[7, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'twitter', 'tw-id-789'),
+('zezima', 2, ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('pageinabook', 1, ARRAY[2, 5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', NULL, NULL),
+('notacoconut', 3, ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 'google', 'google-id-234');
 
 -- Insert 10 rows into suggestions table without objectives
 INSERT INTO suggestions (user_id, title, description) VALUES

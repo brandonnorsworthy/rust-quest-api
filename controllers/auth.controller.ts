@@ -16,9 +16,7 @@ export default {
       const newUser = await authService.register(username, password);
       const token = await authService.createTokenSession(newUser, password);
 
-      if (token === null) {
-        throw new Error('Error creating token session');
-      }
+      if (!token) throw new Error('Error creating token session');
 
       return response.status(201).json({ token });
     } catch (error) {
@@ -42,7 +40,9 @@ export default {
         return response.status(400).json({ error: 'Invalid password' });
       }
 
-      return response.status(200).json({ token });
+      response.status(200).json({ token });
+
+      userService.updateLastLogin(user.id);
     } catch (error) {
       console.error('Error during login:', error);
       return response.status(500).send('An unexpected error occurred while logging in');

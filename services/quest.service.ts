@@ -1,4 +1,6 @@
 import { executeQuery } from "../database/connection";
+import { categoryName } from "../models/category";
+import Quest from "../models/quest";
 import { toSnakeCase } from "../utils/toSnakeCase";
 
 type UpdateQuestParams = {
@@ -10,7 +12,15 @@ type UpdateQuestParams = {
 };
 
 export default {
-  getQuests: async (page: number, userId: number) => {
+  getQuests: async (page: number, userId: number): Promise<{
+    id: number;
+    title: string;
+    description: string;
+    objectives: string[];
+    image_url: string;
+    category: categoryName;
+    completed: boolean
+  }[]> => {
     const query = `
     SELECT
       quests.id,
@@ -38,7 +48,14 @@ export default {
     return await executeQuery(query, values);
   },
 
-  getQuest: async (questId: number) => {
+  getQuest: async (questId: number): Promise<{
+    id: number;
+    title: string;
+    description: string;
+    objectives: string[];
+    image_url: string;
+    category: categoryName;
+  }> => {
     const query = `SELECT
         quests.id,
         quests.title,
@@ -58,7 +75,14 @@ export default {
     return await executeQuery(query, values, true);
   },
 
-  getRandomQuestByUserId: async (userId: string) => {
+  getRandomQuestByUserId: async (userId: number): Promise<{
+    id: number;
+    title: string;
+    description: string;
+    objectives: string[];
+    image_url: string;
+    category: categoryName;
+  }> => {
     const query = `
     SELECT
       quests.id,
@@ -86,25 +110,25 @@ export default {
     return await executeQuery(query, values, true);
   },
 
-  getQuestByTitle: async (title: string) => {
+  getQuestByTitle: async (title: string): Promise<Quest> => {
     const query = `SELECT * FROM quests WHERE title = $1;`;
     const values = [title];
 
     return await executeQuery(query, values, true);
   },
 
-  createQuest: async (title: string, description: string, objectives: string[], imageUrl: string, categoryId: number) => {
+  createQuest: async (title: string, description: string, objectives: string[], categoryId: number, suggestedByUserId: number): Promise<Quest> => {
     const query = `
-      INSERT INTO quests (title, description, objectives, image_url, category_id)
+      INSERT INTO quests (title, description, objectives, category_id, suggested_by)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
-    const values = [title, description, objectives, imageUrl, categoryId];
+    const values = [title, description, objectives, categoryId, suggestedByUserId];
 
     return await executeQuery(query, values, true);
   },
 
-  updateQuest: async (questId: number, params: UpdateQuestParams) => {
+  updateQuest: async (questId: number, userId: number, params: UpdateQuestParams): Promise<Quest> => {
     const fields = Object.entries(params)
       .filter(([_, value]) => value !== undefined)
       .map(([key], index) => `${toSnakeCase(key)} = $${index + 1}`);
@@ -115,18 +139,25 @@ export default {
 
     const query = `
       UPDATE quests
-      SET ${fields.join(', ')}
+      SET ${fields.join(', ')},
+        updated_at = NOW()
+        updated_by = $${fields.length + 2}
       WHERE id = $${fields.length + 1}
       RETURNING *;
     `;
 
-    const values = [...Object.values(params).filter(value => value !== undefined), questId];
+    const values = [...Object.values(params).filter(value => value !== undefined), questId, userId];
 
     return await executeQuery(query, values, true);
   },
 
-  deleteQuest: async (questId: number) => {
-    const query = `DELETE FROM quests WHERE id = $1;`;
+  deleteQuest: async (questId: number, userId: number): Promise<boolean> => {
+    const query = `UPDATE
+    SET
+      updated_at = NOW(),
+      deleted_by = $2,
+      soft_deleted = true
+    WHERE id = $1;`;
     const values = [questId];
 
     return await executeQuery(query, values);
