@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
+import { tokenData } from '../models/token';
 
-const signToken = (payload: any): string => {
+const signToken = (payload: tokenData): string => {
   const token = jwt.sign(payload, JWT_SECRET);
   return token;
 };

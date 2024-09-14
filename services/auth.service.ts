@@ -1,16 +1,11 @@
 import { executeQuery } from "../database/connection";
+import Role from "../models/role";
+import User, { metadata } from "../models/user";
 import { comparePassword, hashPassword } from "../utils/passwordHash";
 import { signToken } from "../utils/signToken";
 
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  role: string;
-}
-
 export default {
-  register: async (username: string, password: string) => {
+  register: async (username: string, password: string): Promise<User> => {
     try {
       const passwordHash = await hashPassword(password);
       const queryString = `
@@ -25,15 +20,20 @@ export default {
     }
   },
 
-
-  createTokenSession: async (user: User, plaintextPassword: string) => {
+  createTokenSession: async (user: User, plaintextPassword: string): Promise<string | null> => {
     const passwordsMatch = await comparePassword(plaintextPassword, user.password);
 
     if (!passwordsMatch) {
       return null;
     }
 
-    const tokenData = { userId: user.id, username: user.username, role: user.role };
+    const tokenData = { userId: user.id, username: user.username, role: user.role, metadata: user.metadata };
+    return signToken(tokenData);
+  },
+
+  refreshToken: (userId: number, username: string, role: Role, metadata: metadata): string => {
+    const tokenData = { userId, username, role, metadata };
+
     return signToken(tokenData);
   }
 }

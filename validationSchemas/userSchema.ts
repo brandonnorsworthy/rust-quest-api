@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import CATEGORIES from '../constants/categories';
 
 export default {
   questIdSchema: Joi.object({
@@ -7,4 +8,17 @@ export default {
       .min(1)
       .required(),
   }),
+
+  settingsSchema: Joi.object({
+    theme: Joi.string()
+      .valid('light', 'dark'),
+    disableAnimations: Joi.boolean(),
+    instrumentDLCQuests: Joi.boolean(),
+    voicePropsDLCQuests: Joi.boolean(),
+    sunburnDLCQuests: Joi.boolean(),
+    categoryFilters: Joi.array()
+      .items(
+        Joi.string().valid(...CATEGORIES)
+      ),
+  }).unknown(false),
 }

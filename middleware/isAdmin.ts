@@ -8,7 +8,7 @@ const isAdmin = (request: Request, response: Response, next: NextFunction) => {
     return response.status(401).json({ error: 'Access denied, \"role\" missing.' });
   }
 
-  if (role !== 'admin') {
+  if (role !== "admin") {
     return response.status(403).json({ error: 'Access denied, Admins only.' });
   }
 

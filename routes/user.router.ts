@@ -1,7 +1,7 @@
 import express from 'express';
 import userController from '../controllers/user.controller';
 import isAdmin from '../middleware/isAdmin';
-import { validateParams } from '../middleware/validate';
+import { validateBody, validateParams } from '../middleware/validate';
 import userSchema from '../validationSchemas/userSchema';
 
 const userRouter = express.Router();
@@ -12,7 +12,17 @@ userRouter.post(
   validateParams(userSchema.questIdSchema),
   userController.completeQuest
 );
+userRouter.delete(
+  '/completed-quests/:questId',
+  validateParams(userSchema.questIdSchema),
+  userController.removeCompletedQuest
+);
 userRouter.get('/completed-quests', userController.getCompletedQuests);
+userRouter.put(
+  '/settings',
+  validateBody(userSchema.settingsSchema),
+  userController.updateSettings
+);
 
 // admin routes
 userRouter.get(

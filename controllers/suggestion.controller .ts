@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthenticatedRequest } from "../middleware/authenticate";
 import suggestionService from "../services/suggestion.service";
+import questService from "../services/quest.service";
 
 export default {
   getSuggestions: async (request: Request, response: Response) => {
@@ -30,6 +31,28 @@ export default {
     } catch (error) {
       console.error(error);
       return response.status(500).send('An error occurred while creating the suggestion');
+    }
+  },
+
+  convertSuggestionIntoQuest: async (request: Request, response: Response) => {
+    try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { suggestionId } = request.params;
+      const { objectives, categoryId } = request.body;
+
+      const suggestion = await suggestionService.getSuggestionById(Number(suggestionId));
+
+      if (!suggestion) {
+        return response.status(404).send('Suggestion not found');
+      }
+
+      const newQuest = await questService.createQuest(suggestion.title, suggestion.description, objectives, categoryId, suggestion.user_id);
+      await suggestionService.deleteSuggestion(Number(suggestionId), userId);
+
+      return response.send(newQuest);
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while converting the suggestion into a quest');
     }
   }
 };

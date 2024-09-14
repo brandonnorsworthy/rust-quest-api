@@ -1,6 +1,12 @@
 import Joi from 'joi';
 
 export default {
+  allQuests: Joi.object({
+    page: Joi.number()
+      .integer()
+      .min(1)
+  }),
+
   idSchema: Joi.object({
     id: Joi.number()
       .integer()

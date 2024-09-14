@@ -5,7 +5,10 @@ import { AuthenticatedRequest } from "../middleware/authenticate";
 export default {
   getAllQuests: async (request: Request, response: Response) => {
     try {
-      const quests = await questService.getQuests();
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { page } = request.query;
+      const quests = await questService.getQuestsByUserId(Number(page), Number(userId));
+
       if (quests.length === 0) {
         return response.status(404).send('No quests found');
       }
@@ -21,7 +24,7 @@ export default {
     try {
       const questId = parseInt(request.params.id);
 
-      const quest = await questService.getQuest(questId);
+      const quest = await questService.getQuestById(questId);
       if (!quest) {
         return response.status(404).send('Quest not found');
       }
@@ -52,6 +55,7 @@ export default {
   },
 
   createQuest: async (request: Request, response: Response) => {
+    console.warn('createQuest should not be used, all creation should be done through suggestions');
     try {
       const { title, description, objectives, categoryId } = request.body;
 
@@ -76,10 +80,11 @@ export default {
 
   updateQuest: async (request: Request, response: Response) => {
     try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
       const questId = parseInt(request.params.id);
       const { title, description, objectives, imageUrl, categoryId } = request.body;
 
-      const updatedQuest = await questService.updateQuest(questId, { title, description, objectives, imageUrl, categoryId });
+      const updatedQuest = await questService.updateQuest(questId, userId, { title, description, objectives, imageUrl, categoryId });
       if (!updatedQuest) {
         return response.status(404).send('Quest not found');
       }
@@ -93,10 +98,11 @@ export default {
 
   deleteQuest: async (request: Request, response: Response) => {
     try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
       const questId = parseInt(request.params.id);
 
-      const deletedQuest = await questService.deleteQuest(questId);
-      if (!deletedQuest || deletedQuest.count === 0) {
+      const deletedQuest = await questService.deleteQuest(questId, userId);
+      if (!deletedQuest) {
         return response.status(404).send('Quest not found');
       }
 

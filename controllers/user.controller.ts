@@ -44,17 +44,17 @@ export default {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { questId } = request.params;
 
-      const quest = await questService.getQuest(parseInt(questId));
+      const quest = await questService.getQuestById(Number(questId));
       if (!quest) {
         return response.status(404).send('Quest not found');
       }
 
-      const completedQuests: number[] = await userService.getCompletedQuests(parseInt(userId));
-      if (completedQuests.find((completedQuest) => completedQuest === parseInt(questId))) {
+      const completedQuests = await userService.getCompletedQuests(Number(userId));
+      if (completedQuests?.find((completedQuest) => completedQuest.id === Number(questId))) {
         return response.status(400).send('Quest already completed');
       }
 
-      await userService.completeQuest(parseInt(userId), parseInt(questId));
+      await userService.completeQuest(Number(userId), Number(questId));
 
       response.status(201).send('Quest completed');
     } catch (error) {
@@ -63,10 +63,34 @@ export default {
     }
   },
 
+  removeCompletedQuest: async (request: Request, response: Response) => {
+    try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { questId } = request.params;
+
+      const quest = await questService.getQuestById(Number(questId));
+      if (!quest) {
+        return response.status(404).send('Quest not found');
+      }
+
+      const completedQuests = await userService.getCompletedQuests(Number(userId));
+      if (!completedQuests.find((completedQuest) => completedQuest.id === Number(questId))) {
+        return response.status(400).send('Quest not completed');
+      }
+
+      await userService.markQuestIncomplete(Number(userId), Number(questId));
+
+      response.send('Quest marked incomplete');
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('An error occurred while marking quest incomplete');
+    }
+  },
+
   getCompletedQuests: async (request: Request, response: Response) => {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
-      const completedQuests = await userService.getCompletedQuests(parseInt(userId));
+      const completedQuests = await userService.getCompletedQuests(Number(userId));
 
       response.send(completedQuests);
     } catch (error) {
@@ -74,4 +98,19 @@ export default {
       response.status(500).send('An error occurred while fetching completed quests');
     }
   },
+
+  updateSettings: async (request: Request, response: Response) => {
+    try {
+      const { userId, metadata } = (request as AuthenticatedRequest).tokenData;
+      const settings = request.body;
+
+      const updatedMetadata = { ...metadata, ...settings };
+      await userService.updateSettings(Number(userId), updatedMetadata);
+
+      response.send('Settings updated');
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('An error occurred while updating settings');
+    }
+  }
 }

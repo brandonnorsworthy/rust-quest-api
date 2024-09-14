@@ -17,4 +17,10 @@ export default {
       .required()
       .max(512)
   }),
+
+  convertSuggestionIntoQuest: Joi.object({
+    suggestionId: Joi.number()
+      .min(1)
+      .required()
+  })
 }
