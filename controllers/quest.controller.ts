@@ -7,7 +7,7 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { page } = request.query;
-      const quests = await questService.getQuests(Number(page), Number(userId));
+      const quests = await questService.getQuestsByUserId(Number(page), Number(userId));
 
       if (quests.length === 0) {
         return response.status(404).send('No quests found');
@@ -24,7 +24,7 @@ export default {
     try {
       const questId = parseInt(request.params.id);
 
-      const quest = await questService.getQuest(questId);
+      const quest = await questService.getQuestById(questId);
       if (!quest) {
         return response.status(404).send('Quest not found');
       }

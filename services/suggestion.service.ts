@@ -16,7 +16,7 @@ export default {
       JOIN users u ON s.user_id = u.id
     WHERE deleted_by IS NULL
     ORDER BY id
-    LIMIT 20 OFFSET ((1 - 1) * 20);
+    LIMIT 20 OFFSET (($1 - 1) * 20);
     `;
     const values = [offset]
 

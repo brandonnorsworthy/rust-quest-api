@@ -9,11 +9,11 @@ export default {
     role: Role;
   }[]> => {
     const query = `SELECT
-      id,
-      username,
-      roles.name AS role,
-    FROM users
-    JOIN roles ON users.role_id = roles.id
+      u.id,
+      u.username,
+      r.name AS role
+    FROM users u
+    JOIN roles r ON u.role_id = r.id
     LIMIT 20;`;
 
     return await executeQuery(query);

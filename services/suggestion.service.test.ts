@@ -4,9 +4,10 @@ import suggestionService from '../services/suggestion.service';
 describe('Suggestion Service', () => {
   test('getSuggestions should return an array of suggestions', async () => {
     // Arrange
+    const page = 1;
 
     // Act
-    const suggestions = await suggestionService.getSuggestions();
+    const suggestions = await suggestionService.getSuggestions(page);
 
     // Assert
     expect(Array.isArray(suggestions)).toBe(true);
@@ -14,7 +15,7 @@ describe('Suggestion Service', () => {
 
   test('createSuggestion should create a new suggestion', async () => {
     // Arrange
-    const userId = '1';
+    const userId = 1;
     const title = 'New Suggestion';
     const description = 'This is a new suggestion';
 

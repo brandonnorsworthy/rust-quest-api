@@ -12,7 +12,7 @@ type UpdateQuestParams = {
 };
 
 export default {
-  getQuests: async (page: number, userId: number): Promise<{
+  getQuestsByUserId: async (page: number, userId: number): Promise<{
     id: number;
     title: string;
     description: string;
@@ -48,27 +48,33 @@ export default {
     return await executeQuery(query, values);
   },
 
-  getQuest: async (questId: number): Promise<{
+  getQuestById: async (questId: number): Promise<{
     id: number;
     title: string;
     description: string;
     objectives: string[];
     image_url: string;
     category: categoryName;
+    updated_at?: Date;
+    soft_deleted?: boolean;
+    deleted_by?: number;
   }> => {
     const query = `SELECT
-        quests.id,
-        quests.title,
-        quests.description,
-        quests.objectives,
-        quests.image_url,
-        categories.name AS category
+        q.id,
+        q.title,
+        q.description,
+        q.objectives,
+        q.image_url,
+        c.name AS category,
+        q.updated_at,
+        q.soft_deleted,
+        q.deleted_by
       FROM
-        quests
+        quests q
       JOIN
-        categories ON quests.category_id = categories.id
+        categories c ON q.category_id = c.id
       WHERE
-        quests.id = $1;
+        q.id = $1;
     `;
     const values = [questId];
 
@@ -140,7 +146,7 @@ export default {
     const query = `
       UPDATE quests
       SET ${fields.join(', ')},
-        updated_at = NOW()
+        updated_at = NOW(),
         updated_by = $${fields.length + 2}
       WHERE id = $${fields.length + 1}
       RETURNING *;
@@ -152,13 +158,13 @@ export default {
   },
 
   deleteQuest: async (questId: number, userId: number): Promise<boolean> => {
-    const query = `UPDATE
+    const query = `UPDATE quests
     SET
       updated_at = NOW(),
       deleted_by = $2,
       soft_deleted = true
     WHERE id = $1;`;
-    const values = [questId];
+    const values = [questId, userId];
 
     return await executeQuery(query, values);
   },

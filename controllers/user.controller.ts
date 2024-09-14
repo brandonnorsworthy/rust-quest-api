@@ -44,7 +44,7 @@ export default {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { questId } = request.params;
 
-      const quest = await questService.getQuest(Number(questId));
+      const quest = await questService.getQuestById(Number(questId));
       if (!quest) {
         return response.status(404).send('Quest not found');
       }
@@ -68,7 +68,7 @@ export default {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { questId } = request.params;
 
-      const quest = await questService.getQuest(Number(questId));
+      const quest = await questService.getQuestById(Number(questId));
       if (!quest) {
         return response.status(404).send('Quest not found');
       }
