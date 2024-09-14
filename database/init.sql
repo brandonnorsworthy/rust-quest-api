@@ -1,4 +1,5 @@
 -- db-init/init.sql
+-- postgresql database initialization script
 
 -- Categories table
 CREATE TABLE categories (
@@ -33,7 +34,8 @@ CREATE TABLE quests (
     description TEXT NOT NULL,
     title VARCHAR(255) NOT NULL,
     objectives TEXT[] NOT NULL,
-    image_url VARCHAR(255)
+    image_url VARCHAR(255),
+    user_id INTEGER REFERENCES users(id)
 );
 
 -- Insert categories into categories table

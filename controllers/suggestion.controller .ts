@@ -31,5 +31,18 @@ export default {
       console.error(error);
       return response.status(500).send('An error occurred while creating the suggestion');
     }
+  },
+
+  convertSuggestionIntoQuest: async (request: Request, response: Response) => {
+    try {
+      const { suggestionId } = request.params;
+
+      await suggestionService.convertSuggestionIntoQuest(suggestionId);
+
+      return response.send('Suggestion converted into quest');
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while converting the suggestion into a quest');
+    }
   }
 };

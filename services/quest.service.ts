@@ -73,6 +73,7 @@ export default {
         FROM users
         WHERE id = $1
       )
+      AND category_id IS NOT NULL
     ORDER BY RANDOM()
     LIMIT 1;
   `;

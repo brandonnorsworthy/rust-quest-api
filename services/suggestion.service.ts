@@ -35,5 +35,12 @@ export default {
     const values = [userId, title, description];
 
     return await executeQuery(query, values);
-  }
+  },
+
+  convertSuggestionIntoQuest: async (suggestionId: string) => {
+    const query = `INSERT INTO quests (title, description) SELECT title, description FROM suggestions WHERE id = $1;`;
+    const values = [suggestionId];
+
+    return await executeQuery(query, values);
+  },
 }
