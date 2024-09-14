@@ -12,6 +12,11 @@ userRouter.post(
   validateParams(userSchema.questIdSchema),
   userController.completeQuest
 );
+userRouter.delete(
+  '/completed-quests/:questId',
+  validateParams(userSchema.questIdSchema),
+  userController.removeCompletedQuest
+);
 userRouter.get('/completed-quests', userController.getCompletedQuests);
 
 // admin routes

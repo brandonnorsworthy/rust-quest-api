@@ -49,8 +49,8 @@ export default {
         return response.status(404).send('Quest not found');
       }
 
-      const completedQuests: number[] = await userService.getCompletedQuests(parseInt(userId));
-      if (completedQuests.find((completedQuest) => completedQuest === parseInt(questId))) {
+      const completedQuests = await userService.getCompletedQuests(parseInt(userId));
+      if (completedQuests.find((completedQuest) => completedQuest.quest_id === parseInt(questId))) {
         return response.status(400).send('Quest already completed');
       }
 
@@ -60,6 +60,32 @@ export default {
     } catch (error) {
       console.error(error);
       response.status(500).send('An error occurred while completing quest');
+    }
+  },
+
+  removeCompletedQuest: async (request: Request, response: Response) => {
+    try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { questId } = request.params;
+
+      const quest = await questService.getQuest(parseInt(questId));
+      if (!quest) {
+        return response.status(404).send('Quest not found');
+      }
+
+      const completedQuests = await userService.getCompletedQuests(parseInt(userId));
+      console.log(completedQuests);
+      console.log(questId);
+      if (!completedQuests.find((completedQuest) => completedQuest.quest_id === parseInt(questId))) {
+        return response.status(400).send('Quest not completed');
+      }
+
+      await userService.markQuestIncomplete(parseInt(userId), parseInt(questId));
+
+      response.send('Quest marked incomplete');
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('An error occurred while marking quest incomplete');
     }
   },
 

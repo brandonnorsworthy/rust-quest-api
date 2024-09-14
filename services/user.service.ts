@@ -1,5 +1,13 @@
 import { executeQuery } from "../database/connection";
 
+type UserQuest = {
+  quest_id: number;
+  quest_title: string;
+  quest_description: string;
+  quest_image_url: string;
+  category_name: string;
+};
+
 export default {
   getAllUsers: async () => {
     const query = `SELECT
@@ -21,7 +29,14 @@ export default {
     return await executeQuery(query, values, true);
   },
 
-  getCompletedQuests: async (userId: number) => {
+  getCompeltedQuests: async (userId: number): Promise<Number[]> => {
+    const query = `SELECT completed_quests FROM users WHERE id = $1`;
+    const values = [userId];
+
+    return await executeQuery(query, values, true);
+  },
+
+  getCompletedQuests: async (userId: number): Promise<UserQuest[]> => {
     const query = `SELECT q.id AS quest_id,
       q.title AS quest_title,
       q.description AS quest_description,
@@ -39,6 +54,15 @@ export default {
   completeQuest: async (userId: number, questId: number) => {
     const query = `UPDATE users
     SET completed_quests = array_append(completed_quests, $1)
+    WHERE id = $2`;
+    const values = [questId, userId];
+
+    return await executeQuery(query, values);
+  },
+
+  markQuestIncomplete: async (userId: number, questId: number) => {
+    const query = `UPDATE users
+    SET completed_quests = array_remove(completed_quests, $1)
     WHERE id = $2`;
     const values = [questId, userId];
 

@@ -7,7 +7,11 @@ import isAdmin from '../middleware/isAdmin';
 const questRouter = express.Router();
 
 // user routes
-questRouter.get('/', questController.getAllQuests);
+questRouter.get(
+  '/',
+  validateQuery(questSchema.allQuests),
+  questController.getAllQuests
+);
 questRouter.get('/random-quest',
   validateQuery(questSchema.filterSchema),
   questController.getRandomQuest

@@ -5,7 +5,10 @@ import { AuthenticatedRequest } from "../middleware/authenticate";
 export default {
   getAllQuests: async (request: Request, response: Response) => {
     try {
-      const quests = await questService.getQuests();
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { page } = request.query;
+      const quests = await questService.getQuests(Number(page), Number(userId));
+
       if (quests.length === 0) {
         return response.status(404).send('No quests found');
       }
