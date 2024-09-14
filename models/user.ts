@@ -19,7 +19,7 @@ interface User {
 }
 
 export type metadata = {
-  category_filters: Category[];
+  category_filters: number[];
   show_instrument_pack_quests: boolean;
   show_voice_props_pack_quests: boolean;
   show_sunburn_pack_quests: boolean;

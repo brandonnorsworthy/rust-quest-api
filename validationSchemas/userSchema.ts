@@ -13,9 +13,9 @@ export default {
     theme: Joi.string()
       .valid('light', 'dark'),
     disableAnimations: Joi.boolean(),
-    showInstrumentPackQuests: Joi.boolean(),
-    showVoicePropsPackQuests: Joi.boolean(),
-    showSunburnPackQuests: Joi.boolean(),
+    instrumentDLCQuests: Joi.boolean(),
+    voicePropsDLCQuests: Joi.boolean(),
+    sunburnDLCQuests: Joi.boolean(),
     categoryFilters: Joi.array()
       .items(
         Joi.string().valid(...CATEGORIES)

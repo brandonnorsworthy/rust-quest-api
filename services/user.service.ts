@@ -26,13 +26,13 @@ export default {
     role: Role;
   }> => {
     const query = `SELECT
-      id,
-      username,
-      metadata,
-      roles.name AS role,
-    FROM users
-    JOIN roles ON users.role_id = roles
-    WHERE id = $1;`;
+      u.id,
+      u.username,
+      u.metadata,
+      r.name AS role
+    FROM users u
+    JOIN roles r ON u.role_id = r.id
+    WHERE u.id = $1;`;
     const values = [userId];
 
     return await executeQuery(query, values, true);

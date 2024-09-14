@@ -101,18 +101,10 @@ export default {
 
   updateSettings: async (request: Request, response: Response) => {
     try {
-      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { userId, metadata } = (request as AuthenticatedRequest).tokenData;
       const settings = request.body;
 
-      // get user and grab metadata
-      const { metadata } = await userService.getUserById(Number(userId));
-      console.log(metadata);
-
-      // update metadata with new settings.. spread settings into metadata
       const updatedMetadata = { ...metadata, ...settings };
-
-      console.log(updatedMetadata)
-      // save metadata
       await userService.updateSettings(Number(userId), updatedMetadata);
 
       response.send('Settings updated');

@@ -1,5 +1,6 @@
 import { executeQuery } from "../database/connection";
-import User from "../models/user";
+import Role from "../models/role";
+import User, { metadata } from "../models/user";
 import { comparePassword, hashPassword } from "../utils/passwordHash";
 import { signToken } from "../utils/signToken";
 
@@ -29,4 +30,10 @@ export default {
     const tokenData = { userId: user.id, username: user.username, role: user.role, metadata: user.metadata };
     return signToken(tokenData);
   },
+
+  refreshToken: (userId: number, username: string, role: Role, metadata: metadata): string => {
+    const tokenData = { userId, username, role, metadata };
+
+    return signToken(tokenData);
+  }
 }
