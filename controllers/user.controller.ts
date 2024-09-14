@@ -50,7 +50,7 @@ export default {
       }
 
       const completedQuests = await userService.getCompletedQuests(Number(userId));
-      if (completedQuests.find((completedQuest) => completedQuest.id === Number(questId))) {
+      if (completedQuests?.find((completedQuest) => completedQuest.id === Number(questId))) {
         return response.status(400).send('Quest already completed');
       }
 
