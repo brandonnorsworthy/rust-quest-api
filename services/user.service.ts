@@ -11,9 +11,12 @@ export default {
     const query = `SELECT
       u.id,
       u.username,
-      r.name AS role
+      r.name AS role,
+      u.last_login,
+      u.login_count
     FROM users u
     JOIN roles r ON u.role_id = r.id
+    ORDER BY u.id ASC
     LIMIT 20;`;
 
     return await executeQuery(query);
