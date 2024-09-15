@@ -34,12 +34,11 @@ export default {
     SELECT s.id,
       s.title,
       s.description,
-      u.username
+      u.username,
       s.user_id
     FROM suggestions s
       JOIN users u ON s.user_id = u.id
-    WHERE s.id = 1
-    LIMIT 20 OFFSET ((1 - 1) * 20);
+    WHERE s.id = $1;
     `
     const values = [suggestionId]
 

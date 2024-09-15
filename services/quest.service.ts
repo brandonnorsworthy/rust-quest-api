@@ -123,13 +123,13 @@ export default {
     return await executeQuery(query, values, true);
   },
 
-  createQuest: async (title: string, description: string, objectives: string[], categoryId: number, suggestedByUserId: number): Promise<Quest> => {
+  createQuest: async (title: string, description: string, objectives: string[], categoryId: number, suggestedByUserId: number, imageUrl?: string): Promise<Quest> => {
     const query = `
-      INSERT INTO quests (title, description, objectives, category_id, suggested_by)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO quests (title, description, objectives, category_id, suggested_by, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
-    const values = [title, description, objectives, categoryId, suggestedByUserId];
+    const values = [title, description, objectives, categoryId, suggestedByUserId, imageUrl];
 
     return await executeQuery(query, values, true);
   },

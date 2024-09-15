@@ -7,7 +7,9 @@ import questService from "../services/quest.service";
 export default {
   getUsers: async (request: Request, response: Response) => {
     try {
-      const users = await userService.getAllUsers();
+      const { page } = request.query;
+
+      const users = await userService.getAllUsers(Number(page));
 
       if (users.length === 0) {
         response.status(404).send('No users found');

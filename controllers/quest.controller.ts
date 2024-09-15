@@ -7,9 +7,9 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { page } = request.query;
-      const quests = await questService.getQuestsByUserId(Number(page), Number(userId));
 
-      if (quests.length === 0) {
+      const quests = await questService.getQuestsByUserId(Number(page), Number(userId));
+      if (!quests || quests.length === 0) {
         return response.status(404).send('No quests found');
       }
 
@@ -57,7 +57,11 @@ export default {
   createQuest: async (request: Request, response: Response) => {
     console.warn('createQuest should not be used, all creation should be done through suggestions');
     try {
-      const { title, description, objectives, categoryId } = request.body;
+      let { title, description, objectives, categoryId } = request.body;
+
+      title = title?.trim();
+      description = description?.trim();
+      objectives = objectives?.map((objective: string) => objective?.trim());
 
       const quest = await questService.getQuestByTitle(title);
       if (quest) {
@@ -82,7 +86,18 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const questId = parseInt(request.params.id);
-      const { title, description, objectives, imageUrl, categoryId } = request.body;
+      let { title, description, objectives, imageUrl, categoryId } = request.body as {
+        title: string,
+        description: string,
+        objectives: string[],
+        imageUrl: string | undefined,
+        categoryId: number,
+      };
+
+      title = title?.trim();
+      description = description?.trim();
+      objectives = objectives?.map((objective: string) => objective?.trim());
+      imageUrl = imageUrl?.trim();
 
       const updatedQuest = await questService.updateQuest(questId, userId, { title, description, objectives, imageUrl, categoryId });
       if (!updatedQuest) {
@@ -99,7 +114,7 @@ export default {
   deleteQuest: async (request: Request, response: Response) => {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
-      const questId = parseInt(request.params.id);
+      const questId = Number(request.params.id);
 
       const deletedQuest = await questService.deleteQuest(questId, userId);
       if (!deletedQuest) {

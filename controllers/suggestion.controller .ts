@@ -7,6 +7,7 @@ export default {
   getSuggestions: async (request: Request, response: Response) => {
     try {
       const { page } = request.query;
+
       const suggestions = await suggestionService.getSuggestions(Number(page));
 
       if (!suggestions || suggestions.length === 0) {
@@ -22,8 +23,11 @@ export default {
 
   createSuggestion: async (request: Request, response: Response) => {
     try {
-      const { title, description } = request.body;
+      let { title, description } = request.body;
       const { userId } = (request as AuthenticatedRequest).tokenData;
+
+      title = title.trim();
+      description = description.trim();
 
       await suggestionService.createSuggestion(userId, title, description);
 
@@ -38,15 +42,16 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { suggestionId } = request.params;
-      const { objectives, categoryId } = request.body;
+      let { title, description, objectives, categoryId, image_url } = request.body;
+
+      objectives = objectives.map((objective: string) => objective.trim());
 
       const suggestion = await suggestionService.getSuggestionById(Number(suggestionId));
-
       if (!suggestion) {
         return response.status(404).send('Suggestion not found');
       }
 
-      const newQuest = await questService.createQuest(suggestion.title, suggestion.description, objectives, categoryId, suggestion.user_id);
+      const newQuest = await questService.createQuest(title, description, objectives, categoryId, suggestion.user_id, image_url);
       await suggestionService.deleteSuggestion(Number(suggestionId), userId);
 
       return response.send(newQuest);

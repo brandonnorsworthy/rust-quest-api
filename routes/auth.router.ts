@@ -5,37 +5,47 @@ import authController from '../controllers/auth.controller';
 import { validateBody } from '../middleware/validate';
 import authSchema from '../validationSchemas/authSchema';
 import authenticate from '../middleware/authenticate';
+import { minutesToMs } from '../utils/minutesToMs';
 
 const authRouter = express.Router();
 
-const rateLimitMinutes = 20;
-const authRateLimiter = rateLimit({
-  windowMs: rateLimitMinutes * 60 * 1000,
-  message: `Too many requests from this IP, please try again after ${rateLimitMinutes} minutes`,
-});
-
-authRouter.use(authRateLimiter);
-
 authRouter.post(
   '/register',
+  rateLimit({
+    windowMs: minutesToMs(120),
+    limit: 30,
+    message: `Too many requests from this IP, please try again later`,
+  }),
   validateBody(authSchema.register),
   authController.register
 );
 authRouter.post(
-  '/register-guest',
+  '/register/guest',
   validateBody(authSchema.register),
   authenticate,
   authController.registerGuest
 );
+
 authRouter.post(
   '/login',
+  rateLimit({
+    windowMs: minutesToMs(15),
+    limit: 10,
+    message: `Too many requests from this IP, please try again later`,
+  }),
   validateBody(authSchema.login),
   authController.login
 );
 authRouter.post(
-  '/login-guest',
+  '/login/guest',
+  rateLimit({
+    windowMs: minutesToMs(30),
+    limit: 3,
+    message: `Too many requests from this IP, please try again later`,
+  }),
   authController.guestLogin,
 );
+
 authRouter.post(
   '/token',
   authenticate,

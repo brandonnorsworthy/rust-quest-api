@@ -3,7 +3,7 @@ import Role from "../models/role";
 import User, { metadata } from "../models/user";
 
 export default {
-  getAllUsers: async (): Promise<{
+  getAllUsers: async (page: number): Promise<{
     id: number;
     username: string;
     role: Role;
@@ -11,12 +11,16 @@ export default {
     const query = `SELECT
       u.id,
       u.username,
-      r.name AS role
+      r.name AS role,
+      u.last_login,
+      u.login_count
     FROM users u
     JOIN roles r ON u.role_id = r.id
-    LIMIT 20;`;
+    ORDER BY u.id ASC
+    LIMIT 20 OFFSET (($1 - 1) * 20);`;
+    const values = [page];
 
-    return await executeQuery(query);
+    return await executeQuery(query, values);
   },
 
   getUserById: async (userId: number): Promise<{
