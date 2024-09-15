@@ -28,6 +28,7 @@ userRouter.put(
 userRouter.get(
   '/',
   isAdmin,
+  validateParams(userSchema.allUsers),
   userController.getUsers
 );
 userRouter.get(

@@ -2,6 +2,12 @@ import Joi from 'joi';
 import CATEGORIES from '../constants/categories';
 
 export default {
+  allUsers: Joi.object({
+    page: Joi.number()
+      .integer()
+      .min(1)
+  }),
+
   questIdSchema: Joi.object({
     questId: Joi.number()
       .integer()
