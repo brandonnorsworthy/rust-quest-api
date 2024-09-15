@@ -4,9 +4,10 @@ import userService from '../services/user.service';
 describe('User Service', () => {
   test('should get all users', async () => {
     // Arrange
+    const page = 1;
 
     // Act
-    const result = await userService.getAllUsers();
+    const result = await userService.getAllUsers(page);
 
     // Assert
     expect(result).toBeDefined();
