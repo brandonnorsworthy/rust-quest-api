@@ -7,6 +7,7 @@ export default {
   getSuggestions: async (request: Request, response: Response) => {
     try {
       const { page } = request.query;
+
       const suggestions = await suggestionService.getSuggestions(Number(page));
 
       if (!suggestions || suggestions.length === 0) {
@@ -22,8 +23,11 @@ export default {
 
   createSuggestion: async (request: Request, response: Response) => {
     try {
-      const { title, description } = request.body;
+      let { title, description } = request.body;
       const { userId } = (request as AuthenticatedRequest).tokenData;
+
+      title = title.trim();
+      description = description.trim();
 
       await suggestionService.createSuggestion(userId, title, description);
 
@@ -38,7 +42,9 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { suggestionId } = request.params;
-      const { objectives, categoryId } = request.body;
+      let { objectives, categoryId } = request.body;
+
+      objectives = objectives.map((objective: string) => objective.trim());
 
       const suggestion = await suggestionService.getSuggestionById(Number(suggestionId));
 

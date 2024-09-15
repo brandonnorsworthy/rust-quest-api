@@ -5,7 +5,6 @@ export default {
   getAllCategories: async (request: Request, response: Response) => {
     try {
       const categories = await categoryService.getCategories();
-
       if (categories.length === 0) {
         return response.status(404).send('No categories found');
       }

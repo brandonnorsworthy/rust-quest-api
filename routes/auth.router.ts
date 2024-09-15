@@ -12,8 +12,8 @@ const authRouter = express.Router();
 authRouter.post(
   '/register',
   rateLimit({
-    windowMs: minutesToMs(30),
-    limit: 2,
+    windowMs: minutesToMs(120),
+    limit: 30,
     message: `Too many requests from this IP, please try again later`,
   }),
   validateBody(authSchema.register),
