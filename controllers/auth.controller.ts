@@ -63,14 +63,15 @@ export default {
       const { username, password } = request.body;
 
       const user = await userService.getUserByUsername(username);
+      const errorMessage = 'Invalid username or password';
 
       if (user === null) {
-        return response.status(400).json({ error: 'User not found' });
+        return response.status(400).json({ error: errorMessage });
       }
 
       const token = await authService.createTokenSession(user, password);
       if (token === null) {
-        return response.status(400).json({ error: 'Invalid password' });
+        return response.status(400).json({ error: errorMessage });
       }
 
       response.status(200).json({ token });
