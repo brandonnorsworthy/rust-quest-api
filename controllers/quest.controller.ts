@@ -9,7 +9,7 @@ export default {
       const { page } = request.query;
       const quests = await questService.getQuestsByUserId(Number(page), Number(userId));
 
-      if (quests.length === 0) {
+      if (!quests || quests.length === 0) {
         return response.status(404).send('No quests found');
       }
 
