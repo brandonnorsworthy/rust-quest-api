@@ -42,17 +42,16 @@ export default {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
       const { suggestionId } = request.params;
-      let { objectives, categoryId } = request.body;
+      let { title, description, objectives, categoryId, image_url } = request.body;
 
       objectives = objectives.map((objective: string) => objective.trim());
 
       const suggestion = await suggestionService.getSuggestionById(Number(suggestionId));
-
       if (!suggestion) {
         return response.status(404).send('Suggestion not found');
       }
 
-      const newQuest = await questService.createQuest(suggestion.title, suggestion.description, objectives, categoryId, suggestion.user_id);
+      const newQuest = await questService.createQuest(title, description, objectives, categoryId, suggestion.user_id, image_url);
       await suggestionService.deleteSuggestion(Number(suggestionId), userId);
 
       return response.send(newQuest);

@@ -24,6 +24,7 @@ suggestionRouter.post(
   '/:suggestionId/quest',
   isAdmin,
   validateParams(suggestionSchema.convertSuggestionIntoQuest),
+  validateBody(suggestionSchema.convertSuggestionIntoQuestBody),
   suggestionController.convertSuggestionIntoQuest
 );
 
