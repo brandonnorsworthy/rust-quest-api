@@ -27,6 +27,37 @@ export default {
     }
   },
 
+  registerGuest: async (request: Request, response: Response) => {
+    try {
+      const { username, password } = request.body;
+      const userId = (request as AuthenticatedRequest).tokenData.userId;
+
+      const existingUser = await userService.getUserById(userId);
+
+      if (!existingUser || existingUser.role !== 'guest') {
+        return response.status(401).json({ error: 'Only guests can register through this endpoint' });
+      }
+
+      const userWithUsername = await userService.getUserByUsername(username);
+
+      if (userWithUsername !== null) {
+        return response.status(400).json({ error: 'Username already taken' });
+      }
+
+      const updatedUser = await authService.registerGuest(userId, username, password);
+      const token = await authService.createTokenSession(updatedUser, password);
+
+      if (!token) {
+        throw new Error('Error creating token session');
+      }
+
+      return response.status(200).json({ token });
+    } catch (error) {
+      console.error('Error during guest registration:', error);
+      return response.status(500).send('An unexpected error occurred while registering as a guest');
+    }
+  },
+
   login: async (request: Request, response: Response) => {
     try {
       const { username, password } = request.body;
@@ -48,6 +79,22 @@ export default {
     } catch (error) {
       console.error('Error during login:', error);
       return response.status(500).send('An unexpected error occurred while logging in');
+    }
+  },
+
+  guestLogin: async (request: Request, response: Response) => {
+    try {
+      const newUser = await authService.loginGuest();
+      const token = await authService.createGuestTokenSession(newUser);
+
+      if (!token) {
+        throw new Error('Error creating token session');
+      }
+
+      response.status(201).json({ token });
+    } catch (error) {
+      console.error('Error during guest login:', error);
+      return response.status(500).send('An unexpected error occurred while logging in as guest');
     }
   },
 

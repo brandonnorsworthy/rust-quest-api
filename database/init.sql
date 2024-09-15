@@ -66,7 +66,9 @@ CREATE TABLE quests (
 INSERT INTO roles (name) VALUES
 ('user'),
 ('moderator'),
-('admin');
+('admin'),
+('guest');
+
 
 -- Insert categories into categories table
 INSERT INTO categories (name) VALUES

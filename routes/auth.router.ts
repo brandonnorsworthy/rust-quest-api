@@ -22,14 +22,25 @@ authRouter.post(
   authController.register
 );
 authRouter.post(
+  '/register-guest',
+  validateBody(authSchema.register),
+  authenticate,
+  authController.registerGuest
+);
+authRouter.post(
   '/login',
   validateBody(authSchema.login),
   authController.login
+);
+authRouter.post(
+  '/login-guest',
+  authController.guestLogin,
 );
 authRouter.post(
   '/token',
   authenticate,
   authController.token
 );
+
 
 export default authRouter;
