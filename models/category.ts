@@ -3,8 +3,8 @@ type Category = {
   name: categoryName;
   created_at: Date;
   updated_at: Date;
-  updated_by: number;
-  deleted_by: Date;
+  updated_by: number | null;
+  deleted_by: Date | null;
 };
 
 export type categoryName = 'Monuments' |

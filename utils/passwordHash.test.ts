@@ -1,4 +1,4 @@
-import {describe, expect, test} from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { hashPassword, comparePassword } from '../utils/passwordHash';
 
 describe('passwordHash', () => {
