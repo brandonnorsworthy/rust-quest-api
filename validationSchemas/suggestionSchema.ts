@@ -33,7 +33,7 @@ export default {
       .required()
       .max(512),
     objectives: Joi.array()
-      .items(Joi.string().min(1).max(20))
+      .items(Joi.string().min(1).max(128))
       .required(),
     categoryId: Joi.number()
       .min(1)

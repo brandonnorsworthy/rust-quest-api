@@ -42,9 +42,8 @@ export default {
     description: Joi.string()
       .min(1),
     objectives: Joi.array()
-      .items(Joi.string())
-      .min(1),
-    imageUrl: Joi.string()
+      .items(Joi.string()),
+    image_url: Joi.string()
       .min(1),
     categoryId: Joi.number()
       .min(1),
