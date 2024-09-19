@@ -23,24 +23,29 @@ export default {
   }[]> => {
     const query = `
     SELECT
-      quests.id,
-      quests.title,
-      quests.description,
-      quests.objectives,
-      quests.image_url,
-      categories.name AS category,
-      CASE
-        WHEN quests.id = ANY(users.completed_quests) THEN true
-        ELSE false
-      END AS completed
+        quests.id,
+        quests.title,
+        quests.description,
+        quests.objectives,
+        quests.image_url,
+        categories.name AS category,
+        su.username,
+        CASE
+            WHEN quests.id = ANY(users.completed_quests) THEN true
+            ELSE false
+        END AS completed
     FROM
-      quests
+        quests
     JOIN
-      categories ON quests.category_id = categories.id
+        categories ON quests.category_id = categories.id
     LEFT JOIN
-      users ON users.id = $2
+        users su ON su.id = quests.suggested_by
+    LEFT JOIN
+        users ON users.id = $2
+    WHERE
+        soft_deleted IS NOT TRUE
     ORDER BY
-      quests.id
+        quests.id
     LIMIT 20 OFFSET (($1 - 1) * 20);
   `;
     const values = [page, userId];
@@ -60,21 +65,24 @@ export default {
     deleted_by?: number;
   }> => {
     const query = `SELECT
-        q.id,
-        q.title,
-        q.description,
-        q.objectives,
-        q.image_url,
-        c.name AS category,
-        q.updated_at,
-        q.soft_deleted,
-        q.deleted_by
-      FROM
-        quests q
-      JOIN
-        categories c ON q.category_id = c.id
-      WHERE
-        q.id = $1;
+      q.id,
+      q.title,
+      q.description,
+      q.objectives,
+      q.image_url,
+      c.name AS category,
+      q.updated_at,
+      q.soft_deleted,
+      q.deleted_by,
+      su.username
+    FROM
+      quests q
+    JOIN
+      categories c ON q.category_id = c.id
+    LEFT JOIN
+      users su ON su.id = q.suggested_by
+    WHERE
+      q.id = $1;
     `;
     const values = [questId];
 
@@ -96,11 +104,14 @@ export default {
       quests.description,
       quests.objectives,
       quests.image_url,
-      categories.name AS category
+      categories.name AS category,
+      su.username
     FROM
       quests
     JOIN
       categories ON quests.category_id = categories.id
+    LEFT JOIN
+      users su on su.id = quests.suggested_by
     WHERE
       quests.id NOT IN (
         SELECT UNNEST(completed_quests)
@@ -108,6 +119,7 @@ export default {
         WHERE id = $1
       )
       AND category_id IS NOT NULL
+      AND soft_deleted IS NOT TRUE
     ORDER BY RANDOM()
     LIMIT 1;
   `;
