@@ -23,8 +23,6 @@ export default {
     voicePropsDLCQuests: Joi.boolean(),
     sunburnDLCQuests: Joi.boolean(),
     categoryFilters: Joi.array()
-      .items(
-        Joi.string().valid(...CATEGORIES)
-      ),
+      .items(Joi.number()),
   }).unknown(false),
 }
