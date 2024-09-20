@@ -143,7 +143,16 @@ export default {
     `;
     const values = [title, description, objectives, categoryId, suggestedByUserId, imageUrl];
 
-    return await executeQuery(query, values, true);
+    const newQuest = await executeQuery(query, values, true);
+
+    const userQuest = `
+      UPDATE users
+      SET approved_suggestions = approved_suggestions + 1
+      WHERE id = $1;
+    `
+    await executeQuery(userQuest, [suggestedByUserId]);
+
+    return newQuest
   },
 
   updateQuest: async (questId: number, userId: number, params: UpdateQuestParams): Promise<Quest> => {

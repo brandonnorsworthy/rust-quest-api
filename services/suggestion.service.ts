@@ -23,6 +23,22 @@ export default {
     return await executeQuery(query, values);
   },
 
+  getLeaderboard: async () => {
+    const query = `
+    SELECT u.id,
+      u.username,
+      u.approved_suggestions AS suggestions
+    FROM users u
+      JOIN roles r ON u.role_id = r.id
+    WHERE r.name != 'guest'
+    ORDER BY u.approved_suggestions DESC,
+      u.id ASC
+    LIMIT 20;
+    `;
+
+    return await executeQuery(query);
+  },
+
   getSuggestionById: async (suggestionId: number): Promise<{
     id: number;
     title: string;

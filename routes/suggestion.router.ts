@@ -12,6 +12,10 @@ suggestionRouter.post(
   validateBody(suggestionSchema.suggestion),
   suggestionController.createSuggestion
 );
+suggestionRouter.get(
+  '/leaderboard',
+  suggestionController.getLeaderboard
+)
 
 // admin routes
 suggestionRouter.get(
