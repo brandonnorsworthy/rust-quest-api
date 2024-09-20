@@ -81,7 +81,8 @@ INSERT INTO categories (name) VALUES
 ('Automation'),
 ('Trolling'),
 ('Survival'),
-('Raiding');
+('Raiding'),
+('Building');
 
 -- Insert 10 rows into users table
 INSERT INTO users (username, role_id, completed_quests, metadata, password) VALUES

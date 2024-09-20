@@ -19,19 +19,29 @@ Setting
 - Disable Animations
 
 ## Overflow
+
+## Added
 - Create a 10 Train car long Train
 - Open a vending machine shop
 - Farm a planter box of crops
 - Make a pure (tea)
 - Use a submarine
 - Kill a shark
-- Mount your enemys head on your base
-- Put up 3 wanted posters of your enemies around your base
-- Have a BBQ with friends
+- Have a BBQ with atleast 1 other player
 - Have someone play a guitar while you sing
-- Build a dance floor and have a party
 - Complete a NPC quest
 - Get a car functional
+
+## Todo
   - Have a camper
   - Have a taxi
+- make a phone call (required someone needs to pick up)
+
+## DLC overflow
+- Mount your enemys head on your base
+- Put up 3 wanted posters of your enemies around your base
 - take a picture with a random person
+- Build a dance floor and have a party
+- Use a megaphone next to the largest base in the area
+- Throw a voice recorder with a with a message on it on a random base
+
