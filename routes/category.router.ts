@@ -6,7 +6,6 @@ const categoryRouter = express.Router();
 
 categoryRouter.get(
   '/',
-  isAdmin,
   categoryController.getAllCategories
 );
 
