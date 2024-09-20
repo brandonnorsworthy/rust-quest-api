@@ -21,6 +21,17 @@ export default {
     }
   },
 
+  getLeaderboard: async (request: Request, response: Response) => {
+    try {
+      const leaderboard = await suggestionService.getLeaderboard();
+
+      return response.send(leaderboard);
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while retrieving the leaderboard');
+    }
+  },
+
   createSuggestion: async (request: Request, response: Response) => {
     try {
       let { title, description } = request.body;

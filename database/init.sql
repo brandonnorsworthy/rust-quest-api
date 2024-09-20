@@ -16,6 +16,7 @@ CREATE TABLE users (
     password VARCHAR(255),
     metadata JSONB NOT NULL DEFAULT '{}',
     completed_quests INTEGER[] NOT NULL DEFAULT ARRAY[]::INTEGER[],
+    approved_suggestions INTEGER DEFAULT 0,
     oauth_provider VARCHAR(50), -- For OAuth integration (e.g., Google, Facebook)
     oauth_id VARCHAR(255), -- ID from the OAuth provider
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -85,13 +86,13 @@ INSERT INTO categories (name) VALUES
 ('Building');
 
 -- Insert 10 rows into users table
-INSERT INTO users (username, role_id, completed_quests, metadata, password) VALUES
-('zcog', 3, ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG'),
-('notacoconut', 3, ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG'),
-('demouser1', 2, ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG'),
-('demouser2', 2, ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG'),
-('demouser3', 1, ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG'),
-('demouser4', 1, ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG');
+INSERT INTO users (username, role_id, completed_quests, metadata, password, approved_suggestions) VALUES
+('zcog', 3, ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 0),
+('notacoconut', 3, ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 0),
+('demouser1', 2, ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 2),
+('demouser2', 2, ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1),
+('demouser3', 1, ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1),
+('demouser4', 1, ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1);
 
 -- Insert 10 rows into suggestions table without objectives
 INSERT INTO suggestions (user_id, title, description) VALUES
