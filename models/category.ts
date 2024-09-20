@@ -7,15 +7,17 @@ type Category = {
   deleted_by: Date | null;
 };
 
-export type categoryName = 'Monuments' |
-  'PVE' |
-  'Gambling' |
-  'PVP' |
-  'Roleplay' |
-  'Automation' |
-  'Troll' |
-  'Exploration' |
-  'Survival' |
-  'Raid';
+export type categoryName = "PVP" |
+  "PVE" |
+  "Monuments" |
+  "Exploration" |
+  "Crafting" |
+  "Gambling" |
+  "Roleplay" |
+  "Automation" |
+  "Trolling" |
+  "Survival" |
+  "Raiding" |
+  "Building";
 
 export default Category;
