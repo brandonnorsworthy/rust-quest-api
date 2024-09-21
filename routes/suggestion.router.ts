@@ -30,11 +30,9 @@ suggestionRouter.delete(
   validateParams(suggestionSchema.suggestionId),
   suggestionController.deleteSuggestion
 );
-
-// admin routes
 suggestionRouter.post(
   '/:suggestionId/quest',
-  isAdmin,
+  isModerator,
   validateParams(suggestionSchema.suggestionId),
   validateBody(suggestionSchema.convertSuggestionIntoQuestBody),
   suggestionController.convertSuggestionIntoQuest

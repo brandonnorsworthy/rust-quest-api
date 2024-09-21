@@ -51,7 +51,7 @@ export default {
 
   convertSuggestionIntoQuest: async (request: Request, response: Response) => {
     try {
-      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { userId, role } = (request as AuthenticatedRequest).tokenData;
       const { suggestionId } = request.params;
       let { title, description, objectives, categoryId, image_url } = request.body;
 
@@ -60,6 +60,10 @@ export default {
       const suggestion = await suggestionService.getSuggestionById(Number(suggestionId));
       if (!suggestion) {
         return response.status(404).send('Suggestion not found');
+      }
+
+      if (role !== "admin" || suggestion.user_id !== userId) {
+        return response.status(403).send('You are not allowed to convert this suggestion into a quest');
       }
 
       const newQuest = await questService.createQuest(title, description, objectives, categoryId, suggestion.user_id, image_url);
