@@ -2,7 +2,7 @@ import express from 'express';
 import questController from '../controllers/quest.controller';
 import { validateBody, validateParams, validateQuery } from '../middleware/validate';
 import questSchema from '../validationSchemas/questSchema';
-import isAdmin from '../middleware/isAdmin';
+import { isAdmin, isModerator } from '../middleware/isRole';
 
 const questRouter = express.Router();
 
@@ -22,25 +22,27 @@ questRouter.get(
   questController.getQuest,
 );
 
-// admin routes
-questRouter.post(
-  '/',
-  isAdmin,
-  validateBody(questSchema.create),
-  questController.createQuest
-);
+// moderator routes
 questRouter.put(
   '/:id',
-  isAdmin,
+  isModerator,
   validateParams(questSchema.idSchema),
   validateBody(questSchema.update),
   questController.updateQuest
 );
 questRouter.delete(
   '/:id',
-  isAdmin,
+  isModerator,
   validateParams(questSchema.idSchema),
   questController.deleteQuest
+);
+
+// admin routes
+questRouter.post(
+  '/',
+  isAdmin,
+  validateBody(questSchema.create),
+  questController.createQuest
 );
 
 export default questRouter;

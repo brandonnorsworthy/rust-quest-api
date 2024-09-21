@@ -6,17 +6,26 @@ export default {
     title: string;
     description: string;
     username: string;
+    isLastPage?: boolean;
   }[]> => {
     const query = `
-    SELECT s.id,
-      s.title,
-      s.description,
-      u.username
-    FROM suggestions s
-      JOIN users u ON s.user_id = u.id
-    WHERE deleted_by IS NULL
-    ORDER BY id
-    LIMIT 20 OFFSET (($1 - 1) * 20);
+    WITH paginated_suggestions AS (
+      SELECT s.id,
+        s.title,
+        s.description,
+        u.username
+      FROM suggestions s
+        JOIN users u ON s.user_id = u.id
+      WHERE s.deleted_by IS NULL
+      ORDER BY s.id
+      LIMIT 20 OFFSET (($1 - 1) * 20)
+    )
+    SELECT *,
+      CASE
+        WHEN COUNT(*) OVER () < 20 THEN TRUE
+        ELSE FALSE
+      END AS isLastPage
+    FROM paginated_suggestions;
     `;
     const values = [offset]
 

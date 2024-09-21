@@ -51,7 +51,7 @@ export default {
 
   convertSuggestionIntoQuest: async (request: Request, response: Response) => {
     try {
-      const { userId } = (request as AuthenticatedRequest).tokenData;
+      const { userId, role } = (request as AuthenticatedRequest).tokenData;
       const { suggestionId } = request.params;
       let { title, description, objectives, categoryId, image_url } = request.body;
 
@@ -62,6 +62,10 @@ export default {
         return response.status(404).send('Suggestion not found');
       }
 
+      if (role !== "admin" || suggestion.user_id !== userId) {
+        return response.status(403).send('You are not allowed to convert this suggestion into a quest');
+      }
+
       const newQuest = await questService.createQuest(title, description, objectives, categoryId, suggestion.user_id, image_url);
       await suggestionService.deleteSuggestion(Number(suggestionId), userId);
 
@@ -70,5 +74,19 @@ export default {
       console.error(error);
       return response.status(500).send('An error occurred while converting the suggestion into a quest');
     }
-  }
+  },
+
+  deleteSuggestion: async (request: Request, response: Response) => {
+    try {
+      const { suggestionId } = request.params;
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+
+      await suggestionService.deleteSuggestion(Number(suggestionId), userId);
+
+      return response.send('Suggestion deleted');
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while deleting the suggestion');
+    }
+  },
 };

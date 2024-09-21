@@ -2,7 +2,7 @@ import express from 'express';
 import suggestionController from '../controllers/suggestion.controller ';
 import { validateBody, validateParams, validateQuery } from '../middleware/validate';
 import suggestionSchema from '../validationSchemas/suggestionSchema';
-import isAdmin from '../middleware/isAdmin';
+import { isAdmin, isModerator } from '../middleware/isRole';
 
 const suggestionRouter = express.Router();
 
@@ -17,17 +17,23 @@ suggestionRouter.get(
   suggestionController.getLeaderboard
 )
 
-// admin routes
+// moderator routes
 suggestionRouter.get(
   '/',
-  isAdmin,
+  isModerator,
   validateQuery(suggestionSchema.allSuggestions),
   suggestionController.getSuggestions
 );
+suggestionRouter.delete(
+  '/:suggestionId',
+  isModerator,
+  validateParams(suggestionSchema.suggestionId),
+  suggestionController.deleteSuggestion
+);
 suggestionRouter.post(
   '/:suggestionId/quest',
-  isAdmin,
-  validateParams(suggestionSchema.convertSuggestionIntoQuest),
+  isModerator,
+  validateParams(suggestionSchema.suggestionId),
   validateBody(suggestionSchema.convertSuggestionIntoQuestBody),
   suggestionController.convertSuggestionIntoQuest
 );
