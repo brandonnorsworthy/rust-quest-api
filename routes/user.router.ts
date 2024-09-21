@@ -1,6 +1,6 @@
 import express from 'express';
 import userController from '../controllers/user.controller';
-import isAdmin from '../middleware/isAdmin';
+import { isAdmin } from '../middleware/isRole';
 import { validateBody, validateParams } from '../middleware/validate';
 import userSchema from '../validationSchemas/userSchema';
 

@@ -70,5 +70,19 @@ export default {
       console.error(error);
       return response.status(500).send('An error occurred while converting the suggestion into a quest');
     }
-  }
+  },
+
+  deleteSuggestion: async (request: Request, response: Response) => {
+    try {
+      const { suggestionId } = request.params;
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+
+      await suggestionService.deleteSuggestion(Number(suggestionId), userId);
+
+      return response.send('Suggestion deleted');
+    } catch (error) {
+      console.error(error);
+      return response.status(500).send('An error occurred while deleting the suggestion');
+    }
+  },
 };

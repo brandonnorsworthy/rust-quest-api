@@ -10,8 +10,8 @@ export default {
     try {
       const passwordHash = await hashPassword(password);
       const queryString = `
-        INSERT INTO users (username, password)
-        VALUES ($1, $2)
+        INSERT INTO users (username, password, last_login)
+        VALUES ($1, $2, NOW())
         RETURNING *
       `;
 
@@ -51,8 +51,8 @@ export default {
 
       const queryString = `
         WITH inserted_user AS (
-          INSERT INTO users (username, role_id)
-          VALUES ($1, (SELECT id FROM roles WHERE name = 'guest' LIMIT 1))
+          INSERT INTO users (username, role_id, last_login)
+          VALUES ($1, (SELECT id FROM roles WHERE name = 'guest' LIMIT 1), NOW())
           RETURNING *
           )
         SELECT inserted_user.*, roles.name AS role
