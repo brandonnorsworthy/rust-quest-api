@@ -23,6 +23,10 @@ userRouter.put(
   validateBody(userSchema.settingsSchema),
   userController.updateSettings
 );
+userRouter.delete(
+  '/completed-quests',
+  userController.resetAllQuests
+);
 
 // admin routes
 userRouter.get(

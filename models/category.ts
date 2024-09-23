@@ -1,6 +1,7 @@
 type Category = {
   id: number;
   name: categoryName;
+  weight: number;
   created_at: Date;
   updated_at: Date;
   updated_by: number | null;

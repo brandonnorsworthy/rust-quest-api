@@ -39,13 +39,8 @@ export default {
   getRandomQuest: async (request: Request, response: Response) => {
     try {
       const { userId } = (request as AuthenticatedRequest).tokenData;
-      const filters = request.query;
-      if (filters) {
-        //todo implement filters
-        // filters.split(",")
-      }
 
-      const randomQuest = await questService.getRandomQuestByUserId(userId);
+      const randomQuest = await questService.getRandomQuest(userId);
 
       return response.send(randomQuest);
     } catch (error) {

@@ -39,7 +39,9 @@ export default {
       u.approved_suggestions AS suggestions
     FROM users u
       JOIN roles r ON u.role_id = r.id
-    WHERE r.name != 'guest'
+    WHERE
+      r.name != 'guest'
+      AND u.approved_suggestions > 0
     ORDER BY u.approved_suggestions DESC,
       u.id ASC
     LIMIT 20;

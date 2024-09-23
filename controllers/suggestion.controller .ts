@@ -62,7 +62,7 @@ export default {
         return response.status(404).send('Suggestion not found');
       }
 
-      if (role !== "admin" || suggestion.user_id !== userId) {
+      if (role !== "admin" && suggestion.user_id === userId) {
         return response.status(403).send('You are not allowed to convert this suggestion into a quest');
       }
 
