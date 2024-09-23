@@ -94,6 +94,7 @@ export default {
   async getRandomQuest(userId: number): Promise<Quest | null> {
     // 1. Fetch user preferences
     const { categoryFilters, completedQuests } = await userService.getUserPreferences(userId);
+    console.log(categoryFilters, completedQuests);
 
     // 2. Fetch available categories based on user filters
     const availableCategories = await categoryService.getAvailableCategories(userId, categoryFilters);

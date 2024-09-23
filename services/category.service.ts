@@ -16,16 +16,22 @@ export default {
       FROM categories c
       JOIN quests q ON q.category_id = c.id
       WHERE 
-        ($1::INTEGER[] IS NULL OR c.id = ANY($1))
+        ($1::BOOLEAN IS TRUE OR c.id = ANY($2::INTEGER[]))
         AND c.deleted_by IS NULL
         AND q.id NOT IN (
           SELECT UNNEST(completed_quests)
           FROM users
-          WHERE id = $2
+          WHERE id = $3
         )
         AND q.soft_deleted IS NOT TRUE
     `;
-    const values = [categoryFilters, userId];
+
+    // Determine if categoryFilters is empty
+    const isCategoryFiltersEmpty = !categoryFilters || categoryFilters.length === 0;
+
+    // If categoryFilters is empty, set it to null, otherwise use the array
+    const values = [isCategoryFiltersEmpty, categoryFilters, userId];
+
 
     const categories = await executeQuery(query, values);
     return categories || [];
