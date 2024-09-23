@@ -94,6 +94,7 @@ export default {
   async getRandomQuest(userId: number): Promise<Quest | null> {
     // 1. Fetch user preferences
     const { categoryFilters, completedQuests } = await userService.getUserPreferences(userId);
+    console.log(categoryFilters, completedQuests);
 
     // 2. Fetch available categories based on user filters
     const availableCategories = await categoryService.getAvailableCategories(userId, categoryFilters);
@@ -112,11 +113,14 @@ export default {
         quests.description,
         quests.objectives,
         quests.image_url,
-        categories.name AS category
+        categories.name AS category,
+        su.username
       FROM
         quests
       JOIN
         categories ON quests.category_id = categories.id
+      LEFT JOIN
+        users su on su.id = quests.suggested_by
       WHERE
         quests.id NOT IN (SELECT UNNEST($1::INTEGER[]))
         AND category_id = $2
