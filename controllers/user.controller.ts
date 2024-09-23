@@ -114,5 +114,17 @@ export default {
       console.error(error);
       response.status(500).send('An error occurred while updating settings');
     }
+  },
+
+  resetAllQuests: async (request: Request, response: Response) => {
+    try {
+      const { userId } = (request as AuthenticatedRequest).tokenData;
+      await userService.resetAllQuests(Number(userId));
+
+      response.send('All quests reset');
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('An error occurred while resetting all quests');
+    }
   }
 }

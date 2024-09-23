@@ -13,7 +13,6 @@ questRouter.get(
   questController.getAllQuests
 );
 questRouter.get('/random-quest',
-  validateQuery(questSchema.filterSchema),
   questController.getRandomQuest
 )
 questRouter.get(

@@ -30,6 +30,7 @@ CREATE TABLE users (
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
+    weight INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
@@ -48,6 +49,15 @@ CREATE TABLE suggestions (
     deleted_by INTEGER REFERENCES users(id) DEFAULT NULL
 );
 
+CREATE TABLE dlcs (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES users(id) DEFAULT NULL,
+    deleted_by INTEGER REFERENCES users(id) DEFAULT NULL
+);
+
 -- Quests table
 CREATE TABLE quests (
     id SERIAL PRIMARY KEY,
@@ -56,6 +66,7 @@ CREATE TABLE quests (
     title VARCHAR(255) NOT NULL,
     objectives TEXT[] NOT NULL,
     image_url VARCHAR(255),
+    required_dlc INTEGER REFERENCES dlcs(id) DEFAULT NULL,
     suggested_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -71,25 +82,26 @@ INSERT INTO roles (name) VALUES
 ('guest');
 
 -- Insert categories into categories table
-INSERT INTO categories (name) VALUES
-('PVP'),
-('PVE'),
-('Monuments'),
-('Exploration'),
-('Crafting'),
-('Gambling'),
-('Roleplay'),
-('Automation'),
-('Trolling'),
-('Survival'),
-('Raiding'),
-('Building');
+INSERT INTO categories (name, weight) VALUES
+('PVP', 3),
+('PVE', 4),
+('Monuments', 5),
+('Exploration', 5),
+('Crafting', 5),
+('Gambling', 1),
+('Roleplay', 5),
+('Automation', 2),
+('Trolling', 3),
+('Survival', 5),
+('Raiding', 1),
+('Building', 5),
+('Marketplace Items', 1);
 
 -- Insert 10 rows into users table
 INSERT INTO users (username, role_id, completed_quests, metadata, password, approved_suggestions, last_login) VALUES
-('zcog', 3, ARRAY[1, 3, 6, 8], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 0, NOW()),
+('zcog', 3, ARRAY[1, 3, 6, 8], '{ "sound": false, "categoryFilters": [   8,   7,   6 ], "sunburnDLCQuests": false, "disableAnimations": false, "instrumentDLCQuests": false, "voicePropsDLCQuests": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 0, NOW()),
 ('notacoconut', 3, ARRAY[7, 9], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 0, NOW()),
-('demouser1', 2, ARRAY[2, 4, 7], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 2, NOW()),
+('demouser1', 2, ARRAY[2, 4, 7], '{ "sound": false, "categoryFilters": [   1,   2,   3 ], "sunburnDLCQuests": false, "disableAnimations": false, "instrumentDLCQuests": true, "voicePropsDLCQuests": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 2, NOW()),
 ('demouser2', 2, ARRAY[1, 3, 4], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1, NOW()),
 ('demouser3', 1, ARRAY[5, 6], '{"sound": false}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1, NOW()),
 ('demouser4', 1, ARRAY[1, 2, 8], '{"sound": true}', '$2b$10$ita5UtzrE2JBh.275g5i8ebBnnM99D9wZhRmcqfZYfgTjbt.baNyG', 1, NOW());
@@ -101,6 +113,12 @@ INSERT INTO suggestions (user_id, title, description) VALUES
 (5, 'Fight the Giant Robot', 'Defeat the giant robot that is terrorizing the city'),
 (6, 'Finish the Easter Egg', 'Complete the Easter egg quest in the game'),
 (3, 'Get the diamond camo for the intervention', 'Complete all the tasks for the intervention and unlock the diamond camo');
+
+INSERT INTO dlcs (name) VALUES
+('Console Edition'),
+('Sunburn Pack'),
+('Voice Props Pack'),
+('Instruments Pack');
 
 -- Insert 10 rows into quests table
 INSERT INTO quests (category_id, description, title, objectives) VALUES

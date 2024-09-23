@@ -15,7 +15,7 @@ export default {
   }),
 
   filterSchema: Joi.object({
-    filters: Joi.string()
+    categories: Joi.string()
   }),
 
   create: Joi.object({

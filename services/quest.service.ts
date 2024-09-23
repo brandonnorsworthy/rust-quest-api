@@ -2,6 +2,8 @@ import { executeQuery } from "../database/connection";
 import { categoryName } from "../models/category";
 import Quest from "../models/quest";
 import { toSnakeCase } from "../utils/toSnakeCase";
+import categoryService from "./category.service";
+import userService from "./user.service";
 
 type UpdateQuestParams = {
   title?: string;
@@ -89,43 +91,46 @@ export default {
     return await executeQuery(query, values, true);
   },
 
-  getRandomQuestByUserId: async (userId: number): Promise<{
-    id: number;
-    title: string;
-    description: string;
-    objectives: string[];
-    image_url: string;
-    category: categoryName;
-  }> => {
-    const query = `
-    SELECT
-      quests.id,
-      quests.title,
-      quests.description,
-      quests.objectives,
-      quests.image_url,
-      categories.name AS category,
-      su.username
-    FROM
-      quests
-    JOIN
-      categories ON quests.category_id = categories.id
-    LEFT JOIN
-      users su on su.id = quests.suggested_by
-    WHERE
-      quests.id NOT IN (
-        SELECT UNNEST(completed_quests)
-        FROM users
-        WHERE id = $1
-      )
-      AND category_id IS NOT NULL
-      AND soft_deleted IS NOT TRUE
-    ORDER BY RANDOM()
-    LIMIT 1;
-  `;
-    const values = [userId];
+  async getRandomQuest(userId: number): Promise<Quest | null> {
+    // 1. Fetch user preferences
+    const { categoryFilters, completedQuests } = await userService.getUserPreferences(userId);
+    console.log("1", categoryFilters, completedQuests);
 
-    return await executeQuery(query, values, true);
+    // 2. Fetch available categories based on user filters
+    const availableCategories = await categoryService.getAvailableCategories(userId, categoryFilters);
+
+    if (!availableCategories.length) {
+      return null;
+    }
+    console.log("2b", availableCategories);
+
+    // 3. Select a random category
+    const selectedCategory = categoryService.selectRandomCategory(availableCategories);
+    console.log("3", selectedCategory);
+
+    // 4. Fetch a random quest from the selected category that the user has not completed
+    const questQuery = `
+      SELECT
+        quests.id,
+        quests.title,
+        quests.description,
+        quests.objectives,
+        quests.image_url,
+        categories.name AS category
+      FROM
+        quests
+      JOIN
+        categories ON quests.category_id = categories.id
+      WHERE
+        quests.id NOT IN (SELECT UNNEST($1::INTEGER[]))
+        AND category_id = $2
+        AND soft_deleted IS NOT TRUE
+      ORDER BY RANDOM()
+      LIMIT 1;
+    `;
+    const questValues = [completedQuests, selectedCategory.id];
+
+    return await executeQuery(questQuery, questValues, true);
   },
 
   getQuestByTitle: async (title: string): Promise<Quest> => {

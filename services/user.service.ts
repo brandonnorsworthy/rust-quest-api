@@ -115,5 +115,28 @@ export default {
     const values = [userId];
 
     return await executeQuery(query, values);
-  }
+  },
+
+  getUserPreferences: async (userId: number): Promise<{ categoryFilters: number[] | null, completedQuests: number[] }> => {
+    const query = `
+      SELECT metadata->>'categoryFilters' AS categoryFilters, completed_quests
+      FROM users
+      WHERE id = $1
+    `;
+    const result = await executeQuery(query, [userId], true);
+
+    return {
+      categoryFilters: result.categoryfilters ? JSON.parse(result.categoryfilters) : null,
+      completedQuests: result.completed_quests,
+    };
+  },
+
+  resetAllQuests: async (userId: number): Promise<boolean> => {
+    const query = `UPDATE users
+    SET completed_quests = '{}'
+    WHERE id = $1`;
+    const values = [userId];
+
+    return await executeQuery(query, values);
+  },
 };
