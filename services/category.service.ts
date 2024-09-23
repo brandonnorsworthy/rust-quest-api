@@ -36,9 +36,6 @@ export default {
     const randomRoll = Math.random() * totalWeight;
     let currentWeight = 0;
 
-    console.log("totalWeight", totalWeight);
-    console.log("randomRoll", randomRoll);
-
     for (const category of categories) {
       currentWeight += category.weight;
       if (randomRoll <= currentWeight) {

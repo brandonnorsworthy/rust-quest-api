@@ -94,19 +94,15 @@ export default {
   async getRandomQuest(userId: number): Promise<Quest | null> {
     // 1. Fetch user preferences
     const { categoryFilters, completedQuests } = await userService.getUserPreferences(userId);
-    console.log("1", categoryFilters, completedQuests);
 
     // 2. Fetch available categories based on user filters
     const availableCategories = await categoryService.getAvailableCategories(userId, categoryFilters);
-
     if (!availableCategories.length) {
       return null;
     }
-    console.log("2b", availableCategories);
 
     // 3. Select a random category
     const selectedCategory = categoryService.selectRandomCategory(availableCategories);
-    console.log("3", selectedCategory);
 
     // 4. Fetch a random quest from the selected category that the user has not completed
     const questQuery = `
