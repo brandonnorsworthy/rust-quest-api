@@ -112,11 +112,14 @@ export default {
         quests.description,
         quests.objectives,
         quests.image_url,
-        categories.name AS category
+        categories.name AS category,
+        su.username
       FROM
         quests
       JOIN
         categories ON quests.category_id = categories.id
+      LEFT JOIN
+        users su on su.id = quests.suggested_by
       WHERE
         quests.id NOT IN (SELECT UNNEST($1::INTEGER[]))
         AND category_id = $2
