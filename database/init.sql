@@ -95,6 +95,7 @@ INSERT INTO categories (name, weight) VALUES
 ('Survival', 5),
 ('Raiding', 1),
 ('Building', 5),
+('Cooperation', 1),
 ('Marketplace Items', 1);
 
 -- Insert 10 rows into users table
